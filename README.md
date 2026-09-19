@@ -14,7 +14,7 @@ A module for the [MagicMirror²](https://github.com/MichMich/MagicMirror/) that 
 
 ```js
 cd ~/MagicMirror/modules
-git clone https://github.com/lavolp3/MMM-Keyboard.git
+git clone https://github.com/JHWelch/MMM-Keyboard.git
 cd MMM-Keyboard
 npm install
 ```
