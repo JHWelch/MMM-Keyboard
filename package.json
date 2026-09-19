@@ -19,5 +19,10 @@
   "dependencies": {
     "simple-keyboard": "^2.27.57",
     "swipe-keyboard": "^2.0.63"
+  },
+  "devDependencies": {
+    "@jhwelch/mmm-eslint-config": "^5.0.0",
+    "eslint": "^10.11.0",
+    "jest": "^30.5.2"
   }
 }
