@@ -40,3 +40,73 @@ describe('defaults', () => {
     global.config = previousConfig;
   });
 });
+
+describe('getStyles', () => {
+  it('returns the correct styles', () => {
+    expect(MMMKKeyboard.getStyles()).toEqual([
+      'keyboard.css',
+      'node_modules/simple-keyboard/build/css/index.css',
+    ]);
+  });
+});
+
+describe('getScripts', () => {
+  it('returns the correct scripts', () => {
+    expect(MMMKKeyboard.getScripts()).toEqual([
+      'node_modules/simple-keyboard/build/index.js',
+    ]);
+  });
+});
+
+describe('start', () => {
+  it('sets shiftState to 1 if starting uppercase', () => {
+    MMMKKeyboard.config.startUppercase = true;
+
+    MMMKKeyboard.start();
+
+    expect(MMMKKeyboard.shiftState).toBe(1);
+  });
+
+  it('sets shiftState to 0 if not starting uppercase', () => {
+    MMMKKeyboard.config.startUppercase = false;
+
+    MMMKKeyboard.start();
+
+    expect(MMMKKeyboard.shiftState).toBe(0);
+  });
+
+  it('will allow setting language to de', () => {
+    MMMKKeyboard.config.language = 'de';
+
+    MMMKKeyboard.start();
+
+    expect(MMMKKeyboard.config.language).toBe('de');
+  });
+
+  it('will allow setting language to en', () => {
+    MMMKKeyboard.config.language = 'en';
+
+    MMMKKeyboard.start();
+
+    expect(MMMKKeyboard.config.language).toBe('en');
+  });
+
+  it('will revert all other languages to en', () => {
+    MMMKKeyboard.config.language = 'fr';
+
+    MMMKKeyboard.start();
+
+    expect(MMMKKeyboard.config.language).toBe('en');
+  });
+
+  it('loads layouts', () => {
+    const originalLoadLayouts = MMMKKeyboard.loadLayouts;
+    MMMKKeyboard.loadLayouts = jest.fn();
+
+    MMMKKeyboard.start();
+
+    expect(MMMKKeyboard.loadLayouts).toHaveBeenCalled();
+
+    MMMKKeyboard.loadLayouts = originalLoadLayouts;
+  });
+});
