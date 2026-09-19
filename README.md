@@ -11,16 +11,19 @@ A module for the [MagicMirror²](https://github.com/MichMich/MagicMirror/) that 
 ## Installing
 
 ### Step 1 - Install the module
-```javascript
+
+```js
 cd ~/MagicMirror/modules
-git clone https://github.com/lavolp3/MMM-Keyboard.git
+git clone https://github.com/JHWelch/MMM-Keyboard.git
 cd MMM-Keyboard
 npm install
 ```
 
 ### Step 2 - Add module to `config.js`
+
 Add this configuration into your `config.js` file
-```javascript
+
+```js
 {
     module: "MMM-Keyboard",
     position: "fullscreen_above",
@@ -38,22 +41,24 @@ Add this configuration into your `config.js` file
 * [swipe-keyboard](https://www.npmjs.com/package/swipe-keyboard)
 
 ## Updating
+
 Go to the module’s folder `/MagicMirror/modules/MMM-Keyboard` and pull the latest version from GitHub:
-```
+
+```sh
 git pull
 npm install
 ```
 
 ## Configuration options
 
-| Option            | type   | default        | Description
-|-------------------|--------|--------------- |-----------
-| `language`        | string | config.language| The language. You can override the MM settings here.
-| `swype`           | boolean| false          | Activate swipe mode (experimental!)  **(not implemented yet)**
-| `alwaysShow`      | boolean| false          | Always show keyboard.  **(not implemented yet)**
-| `startWithNumbers`| boolean| false          | Start keyboard with 'numbers' layout
-| `startUppercase`  | boolean| true           | Always start with uppercase letters
-| `debug`           | boolean| false          | Debug mode for additional console output. Will also create a keyboard button to activate the keyboard.
+| Option             | type    | default         | Description                                                                                            |
+| ------------------ | ------- | --------------- | ------------------------------------------------------------------------------------------------------ |
+| `language`         | string  | config.language | The language. You can override the MM settings here.                                                   |
+| `swype`            | boolean | false           | Activate swipe mode (experimental!)  **(not implemented yet)**                                         |
+| `alwaysShow`       | boolean | false           | Always show keyboard.  **(not implemented yet)**                                                       |
+| `startWithNumbers` | boolean | false           | Start keyboard with 'numbers' layout                                                                   |
+| `startUppercase`   | boolean | true            | Always start with uppercase letters                                                                    |
+| `debug`            | boolean | false           | Debug mode for additional console output. Will also create a keyboard button to activate the keyboard. |
 
 
 # Working with the Keyboard
@@ -61,7 +66,8 @@ npm install
 ## Opening the keyboard
 
 The keyboard works with MagicMirror's notification system. You can broadcast notifications from another module using the following parameters
-```
+
+```js
 this.sendNotification("KEYBOARD", {
     key: "uniqueKey",
     style: "default",
@@ -78,7 +84,7 @@ The payload of the notification must be an object containing two parameters:
 
 As soon as you hit the "SEND!"-Button the keyboard sends back the written content using the format
 
-```
+```js
 this.sendNotification("KEYBOARD_INPUT", {
     key: "uniqueKey",
     message: "test",
@@ -89,7 +95,7 @@ this.sendNotification("KEYBOARD_INPUT", {
 The data object is the same you have send with your notification.  
 You can fetch the message by checking for the `key` component. Here an example:
 
-```
+```js
 notificationReceived : function (notification, payload) {
     if (notification == "KEYBOARD_INPUT" && payload.key === "uniqueKey") {
         console.log(payload.message);
@@ -97,26 +103,9 @@ notificationReceived : function (notification, payload) {
 },
 ```
 
-## Implemented modules
-
-- [x] MMM-Bring
-
-Planned:
-- [ ] MMM-Todo
-- [ ] an own Timer / Alarm module
-
-For further implementations, contact me or send it as an issue here!
-
-
-# ToDos
-
-- [x] include locales ("de", "en")
-- [ ] include styling options
-- [x] use transition effect to draw keyboard up from bottom or top border
-
-
 ## THANKS
 
 Thanks go to
 - Francisco Hodge for his beautiful simple-keyboard npm module
 - @jheyman for alpha testing :-)
+- @lavolp3 for the original module
