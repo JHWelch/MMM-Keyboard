@@ -11,7 +11,8 @@ A module for the [MagicMirror²](https://github.com/MichMich/MagicMirror/) that 
 ## Installing
 
 ### Step 1 - Install the module
-```javascript
+
+```js
 cd ~/MagicMirror/modules
 git clone https://github.com/lavolp3/MMM-Keyboard.git
 cd MMM-Keyboard
@@ -19,8 +20,10 @@ npm install
 ```
 
 ### Step 2 - Add module to `config.js`
+
 Add this configuration into your `config.js` file
-```javascript
+
+```js
 {
     module: "MMM-Keyboard",
     position: "fullscreen_above",
@@ -38,8 +41,10 @@ Add this configuration into your `config.js` file
 * [swipe-keyboard](https://www.npmjs.com/package/swipe-keyboard)
 
 ## Updating
+
 Go to the module’s folder `/MagicMirror/modules/MMM-Keyboard` and pull the latest version from GitHub:
-```
+
+```sh
 git pull
 npm install
 ```
@@ -61,7 +66,8 @@ npm install
 ## Opening the keyboard
 
 The keyboard works with MagicMirror's notification system. You can broadcast notifications from another module using the following parameters
-```
+
+```js
 this.sendNotification("KEYBOARD", {
     key: "uniqueKey",
     style: "default",
@@ -78,7 +84,7 @@ The payload of the notification must be an object containing two parameters:
 
 As soon as you hit the "SEND!"-Button the keyboard sends back the written content using the format
 
-```
+```js
 this.sendNotification("KEYBOARD_INPUT", {
     key: "uniqueKey",
     message: "test",
@@ -89,7 +95,7 @@ this.sendNotification("KEYBOARD_INPUT", {
 The data object is the same you have send with your notification.  
 You can fetch the message by checking for the `key` component. Here an example:
 
-```
+```js
 notificationReceived : function (notification, payload) {
     if (notification == "KEYBOARD_INPUT" && payload.key === "uniqueKey") {
         console.log(payload.message);
