@@ -4,7 +4,10 @@
   "description": "A MagicMirror² module that creates a virtual keyboard to be used to send commands or text to other modules",
   "main": "MMM-Keyboard.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "lint": "eslint .",
+    "fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -19,5 +22,11 @@
   "dependencies": {
     "simple-keyboard": "^2.27.57",
     "swipe-keyboard": "^2.0.63"
+  },
+  "devDependencies": {
+    "@jhwelch/mmm-eslint-config": "^5.0.0",
+    "eslint": "^10.11.0",
+    "jest": "^30.5.2",
+    "jest-environment-jsdom": "^30.5.2"
   }
 }
