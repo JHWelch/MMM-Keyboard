@@ -4,6 +4,8 @@
   "description": "A MagicMirror² module that creates a virtual keyboard to be used to send commands or text to other modules",
   "main": "MMM-Keyboard.js",
   "scripts": {
+    "lint": "eslint .",
+    "fix": "eslint . --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
