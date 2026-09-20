@@ -41,13 +41,25 @@ Add this configuration into your `config.js` file
 
 * [simple-keyboard](https://www.npmjs.com/package/simple-keyboard)
 
-## Updating
+## Update
 
-Go to the module’s folder `/MagicMirror/modules/MMM-Keyboard` and pull the latest version from GitHub:
+### Automatic Update
+
+Did you know MagicMirror² has a built-in module updater? Read more about it [here](https://docs.magicmirror.builders/modules/updatenotification.html#updates-array).
+
+Add the following to your `updates` array of `updatenotification` in `config/config.js`
+
+```js
+{ 'MMM-Keyboard': 'git pull && npm install --omit=dev' },
+```
+
+### Manual Update
+
+In `~/MagicMirror/modules/MMM-Keyboard`
 
 ```sh
 git pull
-npm install
+npm install --omit=dev
 ```
 
 ## Configuration options
