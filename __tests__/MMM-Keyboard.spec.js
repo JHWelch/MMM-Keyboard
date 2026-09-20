@@ -209,8 +209,8 @@ describe('notificationReceived', () => {
       .toHaveBeenCalledWith('MMM-Keyboard recognized a notification: KEYBOARD{"key":"test-key","style":"default","data":{"test":"data","foo":"bar"}}');
     expect(MMMKeyboard.log)
       .toHaveBeenCalledWith('Activating Keyboard!');
-    expect(MMMKeyboard.currentKey).toBe('test-key');
-    expect(MMMKeyboard.currentData).toEqual({
+    expect(MMMKeyboard.current.key).toBe('test-key');
+    expect(MMMKeyboard.current.data).toEqual({
       test: 'data',
       foo: 'bar',
     });
@@ -228,8 +228,10 @@ describe('sendInput', () => {
   it('sends KEYBOARD_INPUT with message', () => {
     const oldSendNotification = MMMKeyboard.sendNotification;
     MMMKeyboard.sendNotification = jest.fn();
-    MMMKeyboard.currentKey = 'test-key';
-    MMMKeyboard.currentData = { foo: 'bar' };
+    MMMKeyboard.current = {
+      key: 'test-key',
+      data: { foo: 'bar' },
+    };
 
     document.body.appendChild(MMMKeyboard.getDom());
     document.getElementById('kbInput').value = 'User input';

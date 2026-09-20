@@ -12,6 +12,8 @@ Module.register('MMM-Keyboard', {
     debug: false,
   },
 
+  current: {},
+
   layouts: {},
 
   getStyles: function () {
@@ -110,8 +112,7 @@ Module.register('MMM-Keyboard', {
     } else if (notification === 'KEYBOARD') {
       this.log('MMM-Keyboard recognized a notification: ' + notification + JSON.stringify(payload));
       this.log('Activating Keyboard!');
-      this.currentKey = payload.key;
-      this.currentData = payload.data;
+      this.current = payload;
       const layoutName = (payload.style == 'default')
         ? ((this.config.startUppercase) ? 'shift' : 'default')
         : 'numbers';
@@ -124,9 +125,8 @@ Module.register('MMM-Keyboard', {
     const message = document.getElementById('kbInput').value;
     this.log('MMM-Keyboard sent input: ' + message);
     this.sendNotification('KEYBOARD_INPUT', {
-      key: this.currentKey,
+      ...this.current,
       message: message,
-      data: this.currentData,
     });
     this.keyboard.clearInput();
     document.getElementById('kbInput').value = '';
