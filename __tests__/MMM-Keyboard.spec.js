@@ -429,3 +429,53 @@ describe('onKeyPress', () => {
     });
   });
 });
+
+describe('handleShift', () => {
+  beforeEach(() => {
+    MMMKeyboard.showKeyboard = jest.fn();
+  });
+
+  it('sets layout to numbers if already set in keyboard', () => {
+    MMMKeyboard.keyboard.options.layoutName = 'numbers';
+
+    MMMKeyboard.handleShift();
+
+    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+      layoutName: 'numbers',
+    });
+    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
+  });
+
+  it('sets layout to default if shiftState is default', () => {
+    MMMKeyboard.shiftState = 0;
+
+    MMMKeyboard.handleShift();
+
+    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+      layoutName: 'default',
+    });
+    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
+  });
+
+  it('sets layout to default if shiftState is shift', () => {
+    MMMKeyboard.shiftState = 1;
+
+    MMMKeyboard.handleShift();
+
+    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+      layoutName: 'shift',
+    });
+    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
+  });
+
+  it('sets layout to default if shiftState is caps', () => {
+    MMMKeyboard.shiftState = 2;
+
+    MMMKeyboard.handleShift();
+
+    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+      layoutName: 'shift',
+    });
+    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
+  });
+});
