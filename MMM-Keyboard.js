@@ -13,6 +13,7 @@ Module.register('MMM-Keyboard', {
     startUppercase: true,
     startWithNumbers: false,
     sendLabel: 'SEND!',
+    theme: 'default',
     debug: false,
   },
 
@@ -231,6 +232,7 @@ Module.register('MMM-Keyboard', {
       inputName: 'kbInput',
       layoutName: this.layout(),
       layout: this.layouts[this.config.language],
+      theme: 'hg-theme-'+this.config.theme,
       buttonTheme: [
         {
           class: 'specialButton',
