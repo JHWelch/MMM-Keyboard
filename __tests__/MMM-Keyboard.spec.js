@@ -37,6 +37,7 @@ describe('defaults', () => {
     expect(MMMKeyboard.defaults).toEqual({
       showAlways: false,
       layout: 'default',
+      sendLabel: 'SEND!',
       language: 'en',
       startUppercase: true,
       startWithNumbers: false,
@@ -76,6 +77,10 @@ describe('getScripts', () => {
 });
 
 describe('start', () => {
+  beforeEach(() => {
+    MMMKeyboard.loadLayouts = jest.fn();
+  });
+
   it('sets shiftState to 1 if starting uppercase', () => {
     MMMKeyboard.config.startUppercase = true;
 
@@ -117,14 +122,9 @@ describe('start', () => {
   });
 
   it('loads layouts', () => {
-    const originalLoadLayouts = MMMKeyboard.loadLayouts;
-    MMMKeyboard.loadLayouts = jest.fn();
-
     MMMKeyboard.start();
 
     expect(MMMKeyboard.loadLayouts).toHaveBeenCalled();
-
-    MMMKeyboard.loadLayouts = originalLoadLayouts;
   });
 });
 
@@ -169,6 +169,20 @@ describe('getDom', () => {
 
     expect(MMMKeyboard.getDom()).toMatchSnapshot();
   });
+
+  describe('submit button', () => {
+    it('defaults to SEND!', () => {
+      expect(MMMKeyboard.getDom().querySelector('.sendButton').innerText.trim())
+        .toBe('SEND!');
+    });
+
+    it('can be overridden with config value', () => {
+      MMMKeyboard.config.sendLabel = 'Submit';
+
+      expect(MMMKeyboard.getDom().querySelector('.sendButton').innerText.trim())
+        .toBe('Submit');
+    });
+  });
 });
 
 describe('notificationReceived', () => {
@@ -195,8 +209,8 @@ describe('notificationReceived', () => {
       .toHaveBeenCalledWith('MMM-Keyboard recognized a notification: KEYBOARD{"key":"test-key","style":"default","data":{"test":"data","foo":"bar"}}');
     expect(MMMKeyboard.log)
       .toHaveBeenCalledWith('Activating Keyboard!');
-    expect(MMMKeyboard.currentKey).toBe('test-key');
-    expect(MMMKeyboard.currentData).toEqual({
+    expect(MMMKeyboard.current.key).toBe('test-key');
+    expect(MMMKeyboard.current.data).toEqual({
       test: 'data',
       foo: 'bar',
     });
@@ -214,8 +228,10 @@ describe('sendInput', () => {
   it('sends KEYBOARD_INPUT with message', () => {
     const oldSendNotification = MMMKeyboard.sendNotification;
     MMMKeyboard.sendNotification = jest.fn();
-    MMMKeyboard.currentKey = 'test-key';
-    MMMKeyboard.currentData = { foo: 'bar' };
+    MMMKeyboard.current = {
+      key: 'test-key',
+      data: { foo: 'bar' },
+    };
 
     document.body.appendChild(MMMKeyboard.getDom());
     document.getElementById('kbInput').value = 'User input';
