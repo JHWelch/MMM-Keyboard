@@ -8,7 +8,7 @@ require('../__mocks__/globalLogger');
 const name = 'MMM-Keyboard';
 
 let MMMKKeyboard;
-let oldLog
+let oldLog;
 
 beforeEach(() => {
   jest.resetModules();
@@ -22,12 +22,15 @@ beforeEach(() => {
     setOptions: jest.fn(),
     getInput: jest.fn().mockReturnValue('test-input'),
     clearInput: jest.fn(),
+    options: {
+      layoutName: 'default',
+    },
   };
 });
 
 afterEach(() => {
   MMMKKeyboard.log = oldLog;
-})
+});
 
 describe('defaults', () => {
   it('has a default config', () => {
@@ -236,5 +239,29 @@ describe('sendInput', () => {
       .not.toContain('show-keyboard');
 
     MMMKKeyboard.sendNotification = oldSendNotification;
+  });
+});
+
+describe('onChange', () => {
+  it('sets kbInput value', () => {
+    document.body.appendChild(MMMKKeyboard.getDom());
+
+    MMMKKeyboard.onChange('new value');
+
+    expect(document.getElementById('kbInput').value).toBe('new value');
+    expect(MMMKKeyboard.log).toHaveBeenCalledWith('Input changed: new value');
+  });
+
+  it('sets shift state if input is empty', () => {
+    const oldHandleShift = MMMKKeyboard.handleShift;
+    MMMKKeyboard.handleShift = jest.fn();
+    document.body.appendChild(MMMKKeyboard.getDom());
+
+    MMMKKeyboard.onChange('');
+
+    expect(MMMKKeyboard.shiftState).toBe(1);
+    expect(MMMKKeyboard.handleShift).toHaveBeenCalled();
+
+    MMMKKeyboard.handleShift = oldHandleShift;
   });
 });
