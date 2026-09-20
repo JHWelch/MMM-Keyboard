@@ -374,6 +374,12 @@ describe('onKeyPress', () => {
   });
 
   describe('{backspace}', () => {
+    beforeEach(() => {
+      const kbInput = document.createElement('input');
+      kbInput.id = 'kbInput';
+      document.body.appendChild(kbInput);
+    });
+
     it('does nothing if there is still input', () => {
       document.getElementById('kbInput').value = 'something';
 
