@@ -30,6 +30,7 @@ beforeEach(() => {
 
 afterEach(() => {
   MMMKeyboard.log = oldLog;
+  document.getElementsByTagName('html')[0].innerHTML = '';
 });
 
 describe('defaults', () => {
@@ -560,5 +561,64 @@ describe('buildKeyboard', () => {
     MMMKeyboard.buildKeyboard();
 
     expect(MMMKeyboard.keyboard.data.layoutName).toBe('shift');
+  });
+});
+
+describe('showKeyboard', () => {
+  it('sets appropriate attributes', () => {
+    MMMKeyboard.kbContainer = document.createElement('div');
+    const inputDiv = document.createElement('div');
+    inputDiv.id = 'inputDiv';
+    const kbInput = document.createElement('div');
+    kbInput.id = 'kbInput';
+    document.body.appendChild(inputDiv);
+    document.body.appendChild(kbInput);
+
+    MMMKeyboard.showKeyboard();
+
+    expect(MMMKeyboard.kbContainer.classList).toContain('show-keyboard');
+    expect(document.getElementById('inputDiv').style.display).toBe('block');
+    expect(document.getElementById('kbInput').value).toBe('test-input');
+  });
+});
+
+describe('hideKeyboard', () => {
+  it('sets appropriate attributes', () => {
+    MMMKeyboard.kbContainer = document.createElement('div');
+    MMMKeyboard.kbContainer.classList.add('show-keyboard');
+
+    MMMKeyboard.hideKeyboard();
+
+    expect(MMMKeyboard.kbContainer.classList).not.toContain('show-keyboard');
+  });
+
+  it('enables kbButton if debug is set', () => {
+    MMMKeyboard.config.debug = true;
+    MMMKeyboard.kbContainer = document.createElement('div');
+    MMMKeyboard.kbContainer.classList.add('show-keyboard');
+    const kbButton = document.createElement('div');
+    kbButton.classList.add('kbButton');
+    kbButton.style.display = 'none';
+    document.body.appendChild(kbButton);
+
+    MMMKeyboard.hideKeyboard();
+
+    expect(document.getElementsByClassName('kbButton')[0].style.display)
+      .toBe('block');
+  });
+
+  it('does not enable kbButton if debug is set', () => {
+    MMMKeyboard.config.debug = false;
+    MMMKeyboard.kbContainer = document.createElement('div');
+    MMMKeyboard.kbContainer.classList.add('show-keyboard');
+    const kbButton = document.createElement('div');
+    kbButton.classList.add('kbButton');
+    kbButton.style.display = 'none';
+    document.body.appendChild(kbButton);
+
+    MMMKeyboard.hideKeyboard();
+
+    expect(document.getElementsByClassName('kbButton')[0].style.display)
+      .toBe('none');
   });
 });
