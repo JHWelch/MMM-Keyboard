@@ -84,6 +84,7 @@ Module.register('MMM-Keyboard', {
       this.keyboard.setInput(event.target.value);
     });
     const send = document.createElement('button');
+    send.id = 'sendButton';
     send.className = 'sendButton';
     send.innerText = this.config.sendLabel;
     send.setAttribute('name', 'sendButton');
@@ -274,6 +275,8 @@ Module.register('MMM-Keyboard', {
   },
 
   showKeyboard: function () {
+    document.getElementById('sendButton').innerText = this.current.sendLabel
+      ?? this.config.sendLabel;
     this.kbContainer.classList.add('show-keyboard');
     document.getElementById('inputDiv').style.display = 'block';
     document.getElementById('kbInput').value = this.keyboard.getInput();
