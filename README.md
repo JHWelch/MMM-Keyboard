@@ -53,7 +53,6 @@ npm install
 | Option             | type    | default         | Description                                                                                            |
 | ------------------ | ------- | --------------- | ------------------------------------------------------------------------------------------------------ |
 | `language`         | string  | config.language | The language. You can override the MM settings here.                                                   |
-| `swype`            | boolean | false           | Activate swipe mode (experimental!)  **(not implemented yet)**                                         |
 | `alwaysShow`       | boolean | false           | Always show keyboard.  **(not implemented yet)**                                                       |
 | `startWithNumbers` | boolean | false           | Start keyboard with 'numbers' layout                                                                   |
 | `startUppercase`   | boolean | true            | Always start with uppercase letters                                                                    |
