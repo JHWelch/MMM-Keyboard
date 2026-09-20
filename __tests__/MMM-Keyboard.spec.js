@@ -574,7 +574,9 @@ describe('buildKeyboard', () => {
 });
 
 describe('showKeyboard', () => {
-  it('sets appropriate attributes', () => {
+  let send;
+
+  beforeEach(() => {
     MMMKeyboard.kbContainer = document.createElement('div');
     const inputDiv = document.createElement('div');
     inputDiv.id = 'inputDiv';
@@ -582,12 +584,41 @@ describe('showKeyboard', () => {
     kbInput.id = 'kbInput';
     document.body.appendChild(inputDiv);
     document.body.appendChild(kbInput);
+    send = document.createElement('button');
+    send.id = 'sendButton';
+    send.className = 'sendButton';
+    send.innerText = MMMKeyboard.config.sendLabel;
+    send.setAttribute('name', 'sendButton');
+    document.body.appendChild(send);
+  });
 
+  it('sets appropriate attributes', () => {
     MMMKeyboard.showKeyboard();
 
     expect(MMMKeyboard.kbContainer.classList).toContain('show-keyboard');
     expect(document.getElementById('inputDiv').style.display).toBe('block');
     expect(document.getElementById('kbInput').value).toBe('test-input');
+  });
+
+  it('updates the send button with payload override', () => {
+    MMMKeyboard.current = {
+      sendLabel: 'Overridden',
+    };
+
+    MMMKeyboard.showKeyboard();
+
+    expect(document.getElementById('sendButton').innerText)
+      .toBe('Overridden');
+  });
+
+  it('will reset custom send button with config', () => {
+    send.innerText = 'custom';
+    MMMKeyboard.current = {};
+
+    MMMKeyboard.showKeyboard();
+
+    expect(document.getElementById('sendButton').innerText)
+      .toBe(MMMKeyboard.config.sendLabel);
   });
 });
 
