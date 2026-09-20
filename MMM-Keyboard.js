@@ -124,13 +124,14 @@ Module.register('MMM-Keyboard', {
   sendInput: function () {
     var message = document.getElementById('kbInput').value;
     this.log('MMM-Keyboard sent input: ' + message);
-    this.sendNotification('KEYBOARD_INPUT', { key: this.currentKey, message: message, data: this.currentData});
+    this.sendNotification('KEYBOARD_INPUT', { key: this.currentKey, message: message, data: this.currentData });
     this.keyboard.clearInput();
     document.getElementById('kbInput').value = '';
     if (this.config.startUppercase) { this.shiftState = 1; }
     this.hideKeyboard();
   },
 
+  // TODO: Is this used?
   itemClicked: function (item) {
     this.sendSocketNotification('PURCHASED_ITEM', item);
   },

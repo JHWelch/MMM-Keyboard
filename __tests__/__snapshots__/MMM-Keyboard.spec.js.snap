@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`getDom can generate a dom for debug 1`] = `
+<div
+  class="keyboardWrapper"
+>
+  <div
+    class="kbButton fas fa-keyboard"
+  />
+  <div
+    class="kbContainer"
+  >
+    <div
+      id="inputDiv"
+      style="display: none;"
+    >
+      <input
+        id="kbInput"
+        type="text"
+      />
+      <button
+        class="sendButton"
+        name="sendButton"
+      />
+      <button
+        class="sendButton"
+        name="hideButton"
+        style="background-color: rgb(136, 0, 0);"
+      />
+    </div>
+    <div
+      class="simple-keyboard"
+    />
+  </div>
+</div>
+`;
+
+exports[`getDom returns the generated dom 1`] = `
+<div
+  class="keyboardWrapper"
+>
+  <div
+    class="kbContainer"
+  >
+    <div
+      id="inputDiv"
+      style="display: none;"
+    >
+      <input
+        id="kbInput"
+        type="text"
+      />
+      <button
+        class="sendButton"
+        name="sendButton"
+      />
+      <button
+        class="sendButton"
+        name="hideButton"
+        style="background-color: rgb(136, 0, 0);"
+      />
+    </div>
+    <div
+      class="simple-keyboard"
+    />
+  </div>
+</div>
+`;
+
+exports[`loadLayouts loads the layouts into memory 1`] = `
+{
+  "de": {
+    "default": [
+      "q w e r t z u i o p ü {backspace}",
+      "{lock} a s d f g h j k l ö ä",
+      "{shift} y x c v b n m , . - &",
+      "{numbers} @ {space}",
+    ],
+    "numbers": [
+      " . 1 2 3 / ",
+      " : 4 5 6 € ",
+      " , 7 8 9 % ",
+      "{abc} 0 {backspace}",
+    ],
+    "shift": [
+      "Q W E R T Z U I O P Ü {backspace}",
+      "{lock} A S D F G H J K L Ö Ä",
+      "{shift} Y X C V B N M ; : _ /",
+      "{numbers} @ {space}",
+    ],
+  },
+  "en": {
+    "default": [
+      "q w e r t y u i o p / {backspace}",
+      "{lock} a s d f g h j k l - &",
+      "{shift} z x c v b n m , . /",
+      "{numbers} @ {space}",
+    ],
+    "numbers": [
+      " . 1 2 3 / ",
+      " : 4 5 6 $ ",
+      " , 7 8 9 % ",
+      "{abc} 0 {backspace}",
+    ],
+    "shift": [
+      "Q W E R T Y U I O P {backspace}",
+      "{lock} A S D F G H J K L _ %",
+      "{shift} Z X C V B N M ; : $",
+      "{numbers} @ {space}",
+    ],
+  },
+}
+`;

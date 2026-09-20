@@ -1,4 +1,3 @@
- 
 global.Module = {
   definitions: {},
 
@@ -24,6 +23,10 @@ global.Module = {
 
       start () {
         Log.info(`Starting module: ${this.name}`);
+      },
+
+      file (file) {
+        return file;
       },
 
       getScripts () {
