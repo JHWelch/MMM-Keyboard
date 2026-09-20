@@ -132,7 +132,7 @@ Module.register('MMM-Keyboard', {
     this.log('MMM-Keyboard sent input: ' + message);
     this.sendNotification('KEYBOARD_INPUT', {
       ...this.current,
-      message: message,
+      message,
     });
     this.keyboard.clearInput();
     document.getElementById('kbInput').value = '';
@@ -190,7 +190,7 @@ Module.register('MMM-Keyboard', {
   },
 
   handleShift: function (button) {
-    const layout = (this.keyboard.options.layoutName == 'numbers')
+    const layout = (this.keyboard.options.layoutName === 'numbers')
       ? 'numbers'
       : (this.shiftState === shiftStateNormal)
         ? 'default'
@@ -198,7 +198,7 @@ Module.register('MMM-Keyboard', {
     this.keyboard.setOptions({
       layoutName: layout,
     });
-    if (button == '{shift}') { this.log('Changing shift mode to ' + layout); }
+    if (button === '{shift}') { this.log('Changing shift mode to ' + layout); }
     this.showKeyboard();
   },
 
