@@ -77,6 +77,10 @@ describe('getScripts', () => {
 });
 
 describe('start', () => {
+  beforeEach(() => {
+    MMMKeyboard.loadLayouts = jest.fn();
+  });
+
   it('sets shiftState to 1 if starting uppercase', () => {
     MMMKeyboard.config.startUppercase = true;
 
@@ -118,14 +122,9 @@ describe('start', () => {
   });
 
   it('loads layouts', () => {
-    const originalLoadLayouts = MMMKeyboard.loadLayouts;
-    MMMKeyboard.loadLayouts = jest.fn();
-
     MMMKeyboard.start();
 
     expect(MMMKeyboard.loadLayouts).toHaveBeenCalled();
-
-    MMMKeyboard.loadLayouts = originalLoadLayouts;
   });
 });
 
