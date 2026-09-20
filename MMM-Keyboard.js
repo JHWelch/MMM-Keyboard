@@ -134,11 +134,6 @@ Module.register('MMM-Keyboard', {
     this.hideKeyboard();
   },
 
-  // TODO: Is this used?
-  itemClicked: function (item) {
-    this.sendSocketNotification('PURCHASED_ITEM', item);
-  },
-
   onChange: function (input) {
     const kbInput = document.getElementById('kbInput');
     kbInput.value = input;
