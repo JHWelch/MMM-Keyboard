@@ -1,5 +1,7 @@
 /** @jest-environment jsdom */
 
+const fs = require('node:fs');
+
 require('../__mocks__/Module');
 require('../__mocks__/globalLogger');
 
@@ -108,5 +110,36 @@ describe('start', () => {
     expect(MMMKKeyboard.loadLayouts).toHaveBeenCalled();
 
     MMMKKeyboard.loadLayouts = originalLoadLayouts;
+  });
+});
+
+describe('loadLayouts', () => {
+  it('loads the layouts into memory', async () => {
+    const responseText = fs.readFileSync(require.resolve('../layouts.json'), 'utf8');
+    const xhr = {
+      readyState: 0,
+      status: 0,
+      responseText: '',
+      overrideMimeType: jest.fn(),
+      open: jest.fn(),
+      send: jest.fn(),
+    };
+    global.XMLHttpRequest = jest.fn(() => xhr);
+    MMMKKeyboard.buildKeyboard = jest.fn();
+
+    MMMKKeyboard.loadLayouts();
+
+    expect(xhr.open).toHaveBeenCalledWith('GET', 'layouts.json', true);
+    expect(xhr.send).toHaveBeenCalledWith(null);
+
+    xhr.readyState = 4;
+    xhr.status = 200;
+    xhr.responseText = responseText;
+    xhr.onreadystatechange();
+
+    await Promise.resolve();
+
+    expect(MMMKKeyboard.layouts).toMatchSnapshot();
+    expect(MMMKKeyboard.buildKeyboard).toHaveBeenCalled();
   });
 });
