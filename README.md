@@ -38,7 +38,6 @@ Add this configuration into your `config.js` file
 ## Dependencies
 
 * [simple-keyboard](https://www.npmjs.com/package/simple-keyboard)
-* [swipe-keyboard](https://www.npmjs.com/package/swipe-keyboard)
 
 ## Updating
 
