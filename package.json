@@ -20,8 +20,7 @@
   },
   "homepage": "https://github.com/lavolp3/MMM-Keyboard#readme",
   "dependencies": {
-    "simple-keyboard": "^2.27.57",
-    "swipe-keyboard": "^2.0.63"
+    "simple-keyboard": "^3.8.190"
   },
   "devDependencies": {
     "@jhwelch/mmm-eslint-config": "^5.0.0",
