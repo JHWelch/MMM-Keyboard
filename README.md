@@ -1,6 +1,6 @@
 # MMM-Keyboard
 
-![Example image](keyboard-example.jpg)
+![Example image](screenshot.png)
 
 A module for the [MagicMirror²](https://github.com/MichMich/MagicMirror/) that creates a virtual keyboard to be used to send commands or text to other modules
 
