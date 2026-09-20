@@ -1,6 +1,6 @@
 # MMM-Keyboard
 
-![Example image](keyboard-example.jpg)
+![Example image](screenshot.png)
 
 A module for the [MagicMirror²](https://github.com/MichMich/MagicMirror/) that creates a virtual keyboard to be used to send commands or text to other modules
 
@@ -50,13 +50,15 @@ npm install
 
 ## Configuration options
 
-| Option             | type    | default         | Description                                                                                            |
-| ------------------ | ------- | --------------- | ------------------------------------------------------------------------------------------------------ |
-| `language`         | string  | config.language | The language. You can override the MM settings here.                                                   |
-| `alwaysShow`       | boolean | false           | Always show keyboard.  **(not implemented yet)**                                                       |
-| `startWithNumbers` | boolean | false           | Start keyboard with 'numbers' layout                                                                   |
-| `startUppercase`   | boolean | true            | Always start with uppercase letters                                                                    |
-| `debug`            | boolean | false           | Debug mode for additional console output. Will also create a keyboard button to activate the keyboard. |
+| Option             | type                   | default         | Description                                                                                            |
+| ------------------ | ---------------------- | --------------- | ------------------------------------------------------------------------------------------------------ |
+| `language`         | string                 | config.language | The language. You can override the MM settings here.                                                   |
+| `alwaysShow`       | boolean                | false           | Always show keyboard.  **(not implemented yet)**                                                       |
+| `startWithNumbers` | boolean                | false           | Start keyboard with 'numbers' layout                                                                   |
+| `startUppercase`   | boolean                | true            | Always start with uppercase letters                                                                    |
+| `debug`            | boolean                | false           | Debug mode for additional console output. Will also create a keyboard button to activate the keyboard. |
+| `sendLabel`        | string                 | `'SEND!'`       | The label on the send button that will send the input back to the module.                              |
+| `theme`            | `'default'\|'classic'` | `'default'`     | Keyboard theme to use. `'default'` is dark to match mirror, `'classic'` is the old repository theme.   |
 
 
 # Working with the Keyboard

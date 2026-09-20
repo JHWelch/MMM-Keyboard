@@ -45,6 +45,7 @@ describe('defaults', () => {
       language: 'en',
       startUppercase: true,
       startWithNumbers: false,
+      theme: 'default',
       debug: false,
     });
   });
@@ -570,6 +571,14 @@ describe('buildKeyboard', () => {
     MMMKeyboard.buildKeyboard();
 
     expect(MMMKeyboard.keyboard.data.layoutName).toBe('shift');
+  });
+
+  it('passes theme to keyboard', () => {
+    MMMKeyboard.config.theme = 'classic';
+
+    MMMKeyboard.buildKeyboard();
+
+    expect(MMMKeyboard.keyboard.data.theme).toBe('hg-theme-classic');
   });
 });
 

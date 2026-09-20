@@ -40,6 +40,7 @@ exports[`buildKeyboard builds a new keyboard 1`] = `
   "mergeDisplay": true,
   "onChange": [Function],
   "onKeyPress": [Function],
+  "theme": "hg-theme-default",
 }
 `;
 
