@@ -63,6 +63,7 @@ exports[`getDom can generate a dom for debug 1`] = `
       />
       <button
         class="sendButton"
+        id="sendButton"
         name="sendButton"
       />
       <button
@@ -94,6 +95,7 @@ exports[`getDom returns the generated dom 1`] = `
       />
       <button
         class="sendButton"
+        id="sendButton"
         name="sendButton"
       />
       <button
