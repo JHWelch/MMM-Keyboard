@@ -83,25 +83,48 @@
   justify-content: center;
 }
 
-.MMM-Keyboard .hg-theme-default .hg-button {
+.MMM-Keyboard .hg-button {
   height: 50px;
-  color: #5d7b9d;
   font-size: 0.7em;
   padding: 8px;
   margin: 1px;
 }
 
-.MMM-Keyboard .hg-theme-default .hg-button.hg-standardBtn{
+.MMM-Keyboard .hg-button.hg-standardBtn{
   min-width: 45px;
   max-width: 45px;
 }
 
-.MMM-Keyboard .hg-theme-default .specialButton {
+.MMM-Keyboard .specialButton {
   min-width: 60px;
   max-width: 150px;
-  color: #0000ce;
+}
+
+.MMM-Keyboard .hg-theme-default .hg-button {
+  color: var(--color-text-bright);
+  background-color: var(--color-background);
+}
+
+.MMM-Keyboard .hg-theme-default .specialButton {
+  color: var(--color-text);
 }
 
 .MMM-Keyboard .hg-theme-default .emptyButton {
+  background-color: var(--color-background);
+}
+
+.MMM-Keyboard .hg-theme-default .hg-activeButton {
+  background-color: var(--color-text-dimmed) !important;
+}
+
+.MMM-Keyboard .hg-theme-classic .hg-button {
+  color: #5d7b9d;
+}
+
+.MMM-Keyboard .hg-theme-classic .specialButton {
+  color: #0000ce;
+}
+
+.MMM-Keyboard .hg-theme-classic .emptyButton {
   background-color: #ccc;
 }
