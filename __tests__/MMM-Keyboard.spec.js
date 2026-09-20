@@ -479,3 +479,31 @@ describe('handleShift', () => {
     expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
   });
 });
+
+describe('handleNumbers', () => {
+  beforeEach(() => {
+    MMMKeyboard.showKeyboard = jest.fn();
+  });
+
+  it('sets layout to default if already set in keyboard', () => {
+    MMMKeyboard.keyboard.options.layoutName = 'numbers';
+
+    MMMKeyboard.handleNumbers();
+
+    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+      layoutName: 'default',
+    });
+    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
+  });
+
+  it('sets layout to numbers if not already keyboard numbers', () => {
+    MMMKeyboard.keyboard.options.layoutName = 'default';
+
+    MMMKeyboard.handleNumbers();
+
+    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+      layoutName: 'numbers',
+    });
+    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
+  });
+});
