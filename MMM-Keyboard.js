@@ -8,6 +8,7 @@ Module.register('MMM-Keyboard', {
     language: config.language || 'en', // eslint-disable-line no-undef
     startUppercase: true,
     startWithNumbers: false,
+    sendLabel: 'SEND!',
     debug: false,
   },
 
@@ -76,7 +77,7 @@ Module.register('MMM-Keyboard', {
     });
     const send = document.createElement('button');
     send.className = 'sendButton';
-    send.innerText = '  SEND!  ';
+    send.innerText = this.config.sendLabel;
     send.setAttribute('name', 'sendButton');
     send.onclick = () => {
       this.sendInput();

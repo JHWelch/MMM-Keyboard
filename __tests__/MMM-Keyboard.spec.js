@@ -169,6 +169,20 @@ describe('getDom', () => {
 
     expect(MMMKeyboard.getDom()).toMatchSnapshot();
   });
+
+  describe('submit button', () => {
+    it('defaults to SEND!', () => {
+      expect(MMMKeyboard.getDom().querySelector('.sendButton').innerText.trim())
+        .toBe('SEND!');
+    });
+
+    it('can be overridden with config value', () => {
+      MMMKeyboard.config.sendLabel = 'Submit';
+
+      expect(MMMKeyboard.getDom().querySelector('.sendButton').innerText.trim())
+        .toBe('Submit');
+    });
+  });
 });
 
 describe('notificationReceived', () => {
