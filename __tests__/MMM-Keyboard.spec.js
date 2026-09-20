@@ -7,18 +7,18 @@ require('../__mocks__/globalLogger');
 
 const name = 'MMM-Keyboard';
 
-let MMMKKeyboard;
+let MMMKeyboard;
 let oldLog;
 
 beforeEach(() => {
   jest.resetModules();
   require('../MMM-Keyboard');
 
-  MMMKKeyboard = global.Module.create(name);
-  MMMKKeyboard.setData({ name, identifier: `Module_1_${name}` });
-  oldLog = MMMKKeyboard.log;
-  MMMKKeyboard.log = jest.fn();
-  MMMKKeyboard.keyboard = {
+  MMMKeyboard = global.Module.create(name);
+  MMMKeyboard.setData({ name, identifier: `Module_1_${name}` });
+  oldLog = MMMKeyboard.log;
+  MMMKeyboard.log = jest.fn();
+  MMMKeyboard.keyboard = {
     setOptions: jest.fn(),
     getInput: jest.fn().mockReturnValue('test-input'),
     clearInput: jest.fn(),
@@ -29,12 +29,12 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  MMMKKeyboard.log = oldLog;
+  MMMKeyboard.log = oldLog;
 });
 
 describe('defaults', () => {
   it('has a default config', () => {
-    expect(MMMKKeyboard.defaults).toEqual({
+    expect(MMMKeyboard.defaults).toEqual({
       showAlways: false,
       layout: 'default',
       language: 'en',
@@ -50,17 +50,17 @@ describe('defaults', () => {
 
     jest.resetModules();
     require('../MMM-Keyboard');
-    MMMKKeyboard = global.Module.create(name);
-    MMMKKeyboard.setData({ name, identifier: `Module_1_${name}` });
+    MMMKeyboard = global.Module.create(name);
+    MMMKeyboard.setData({ name, identifier: `Module_1_${name}` });
 
-    expect(MMMKKeyboard.defaults.language).toBe('de');
+    expect(MMMKeyboard.defaults.language).toBe('de');
     global.config = previousConfig;
   });
 });
 
 describe('getStyles', () => {
   it('returns the correct styles', () => {
-    expect(MMMKKeyboard.getStyles()).toEqual([
+    expect(MMMKeyboard.getStyles()).toEqual([
       'keyboard.css',
       'node_modules/simple-keyboard/build/css/index.css',
     ]);
@@ -69,7 +69,7 @@ describe('getStyles', () => {
 
 describe('getScripts', () => {
   it('returns the correct scripts', () => {
-    expect(MMMKKeyboard.getScripts()).toEqual([
+    expect(MMMKeyboard.getScripts()).toEqual([
       'node_modules/simple-keyboard/build/index.js',
     ]);
   });
@@ -77,54 +77,54 @@ describe('getScripts', () => {
 
 describe('start', () => {
   it('sets shiftState to 1 if starting uppercase', () => {
-    MMMKKeyboard.config.startUppercase = true;
+    MMMKeyboard.config.startUppercase = true;
 
-    MMMKKeyboard.start();
+    MMMKeyboard.start();
 
-    expect(MMMKKeyboard.shiftState).toBe(1);
+    expect(MMMKeyboard.shiftState).toBe(1);
   });
 
   it('sets shiftState to 0 if not starting uppercase', () => {
-    MMMKKeyboard.config.startUppercase = false;
+    MMMKeyboard.config.startUppercase = false;
 
-    MMMKKeyboard.start();
+    MMMKeyboard.start();
 
-    expect(MMMKKeyboard.shiftState).toBe(0);
+    expect(MMMKeyboard.shiftState).toBe(0);
   });
 
   it('will allow setting language to de', () => {
-    MMMKKeyboard.config.language = 'de';
+    MMMKeyboard.config.language = 'de';
 
-    MMMKKeyboard.start();
+    MMMKeyboard.start();
 
-    expect(MMMKKeyboard.config.language).toBe('de');
+    expect(MMMKeyboard.config.language).toBe('de');
   });
 
   it('will allow setting language to en', () => {
-    MMMKKeyboard.config.language = 'en';
+    MMMKeyboard.config.language = 'en';
 
-    MMMKKeyboard.start();
+    MMMKeyboard.start();
 
-    expect(MMMKKeyboard.config.language).toBe('en');
+    expect(MMMKeyboard.config.language).toBe('en');
   });
 
   it('will revert all other languages to en', () => {
-    MMMKKeyboard.config.language = 'fr';
+    MMMKeyboard.config.language = 'fr';
 
-    MMMKKeyboard.start();
+    MMMKeyboard.start();
 
-    expect(MMMKKeyboard.config.language).toBe('en');
+    expect(MMMKeyboard.config.language).toBe('en');
   });
 
   it('loads layouts', () => {
-    const originalLoadLayouts = MMMKKeyboard.loadLayouts;
-    MMMKKeyboard.loadLayouts = jest.fn();
+    const originalLoadLayouts = MMMKeyboard.loadLayouts;
+    MMMKeyboard.loadLayouts = jest.fn();
 
-    MMMKKeyboard.start();
+    MMMKeyboard.start();
 
-    expect(MMMKKeyboard.loadLayouts).toHaveBeenCalled();
+    expect(MMMKeyboard.loadLayouts).toHaveBeenCalled();
 
-    MMMKKeyboard.loadLayouts = originalLoadLayouts;
+    MMMKeyboard.loadLayouts = originalLoadLayouts;
   });
 });
 
@@ -140,9 +140,9 @@ describe('loadLayouts', () => {
       send: jest.fn(),
     };
     global.XMLHttpRequest = jest.fn(() => xhr);
-    MMMKKeyboard.buildKeyboard = jest.fn();
+    MMMKeyboard.buildKeyboard = jest.fn();
 
-    MMMKKeyboard.loadLayouts();
+    MMMKeyboard.loadLayouts();
 
     expect(xhr.open).toHaveBeenCalledWith('GET', 'layouts.json', true);
     expect(xhr.send).toHaveBeenCalledWith(null);
@@ -154,35 +154,35 @@ describe('loadLayouts', () => {
 
     await Promise.resolve();
 
-    expect(MMMKKeyboard.layouts).toMatchSnapshot();
-    expect(MMMKKeyboard.buildKeyboard).toHaveBeenCalled();
+    expect(MMMKeyboard.layouts).toMatchSnapshot();
+    expect(MMMKeyboard.buildKeyboard).toHaveBeenCalled();
   });
 });
 
 describe('getDom', () => {
   it('returns the generated dom', () => {
-    expect(MMMKKeyboard.getDom()).toMatchSnapshot();
+    expect(MMMKeyboard.getDom()).toMatchSnapshot();
   });
 
   it('can generate a dom for debug', () => {
-    MMMKKeyboard.config.debug = true;
+    MMMKeyboard.config.debug = true;
 
-    expect(MMMKKeyboard.getDom()).toMatchSnapshot();
+    expect(MMMKeyboard.getDom()).toMatchSnapshot();
   });
 });
 
 describe('notificationReceived', () => {
   it('logs a message for `DOM_OBJECTS_CREATED`', () => {
-    MMMKKeyboard.notificationReceived('DOM_OBJECTS_CREATED');
+    MMMKeyboard.notificationReceived('DOM_OBJECTS_CREATED');
 
-    expect(MMMKKeyboard.log)
+    expect(MMMKeyboard.log)
       .toHaveBeenCalledWith('MMM-Keyboard: Initializing keyboard');
   });
 
   it('activates keyboard for `KEYBOARD`', () => {
-    document.body.appendChild(MMMKKeyboard.getDom());
+    document.body.appendChild(MMMKeyboard.getDom());
 
-    MMMKKeyboard.notificationReceived('KEYBOARD', {
+    MMMKeyboard.notificationReceived('KEYBOARD', {
       key: 'test-key',
       style: 'default',
       data: {
@@ -191,16 +191,16 @@ describe('notificationReceived', () => {
       },
     });
 
-    expect(MMMKKeyboard.log)
+    expect(MMMKeyboard.log)
       .toHaveBeenCalledWith('MMM-Keyboard recognized a notification: KEYBOARD{"key":"test-key","style":"default","data":{"test":"data","foo":"bar"}}');
-    expect(MMMKKeyboard.log)
+    expect(MMMKeyboard.log)
       .toHaveBeenCalledWith('Activating Keyboard!');
-    expect(MMMKKeyboard.currentKey).toBe('test-key');
-    expect(MMMKKeyboard.currentData).toEqual({
+    expect(MMMKeyboard.currentKey).toBe('test-key');
+    expect(MMMKeyboard.currentData).toEqual({
       test: 'data',
       foo: 'bar',
     });
-    expect(MMMKKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
       layoutName: 'shift',
     });
     expect(document.getElementById('kbInput').value)
@@ -212,19 +212,19 @@ describe('notificationReceived', () => {
 
 describe('sendInput', () => {
   it('sends KEYBOARD_INPUT with message', () => {
-    const oldSendNotification = MMMKKeyboard.sendNotification;
-    MMMKKeyboard.sendNotification = jest.fn();
-    MMMKKeyboard.currentKey = 'test-key';
-    MMMKKeyboard.currentData = { foo: 'bar' };
+    const oldSendNotification = MMMKeyboard.sendNotification;
+    MMMKeyboard.sendNotification = jest.fn();
+    MMMKeyboard.currentKey = 'test-key';
+    MMMKeyboard.currentData = { foo: 'bar' };
 
-    document.body.appendChild(MMMKKeyboard.getDom());
+    document.body.appendChild(MMMKeyboard.getDom());
     document.getElementById('kbInput').value = 'User input';
 
-    MMMKKeyboard.kbContainer.classList.add('show-keyboard');
+    MMMKeyboard.kbContainer.classList.add('show-keyboard');
 
-    MMMKKeyboard.sendInput();
+    MMMKeyboard.sendInput();
 
-    expect(MMMKKeyboard.sendNotification)
+    expect(MMMKeyboard.sendNotification)
       .toHaveBeenCalledWith('KEYBOARD_INPUT', {
         key: 'test-key',
         message: 'User input',
@@ -232,36 +232,36 @@ describe('sendInput', () => {
           foo: 'bar',
         },
       });
-    expect(MMMKKeyboard.keyboard.clearInput).toHaveBeenCalled();
+    expect(MMMKeyboard.keyboard.clearInput).toHaveBeenCalled();
     expect(document.getElementById('kbInput').value).toBe('');
-    expect(MMMKKeyboard.shiftState).toBe(1);
-    expect(MMMKKeyboard.kbContainer.classList)
+    expect(MMMKeyboard.shiftState).toBe(1);
+    expect(MMMKeyboard.kbContainer.classList)
       .not.toContain('show-keyboard');
 
-    MMMKKeyboard.sendNotification = oldSendNotification;
+    MMMKeyboard.sendNotification = oldSendNotification;
   });
 });
 
 describe('onChange', () => {
   it('sets kbInput value', () => {
-    document.body.appendChild(MMMKKeyboard.getDom());
+    document.body.appendChild(MMMKeyboard.getDom());
 
-    MMMKKeyboard.onChange('new value');
+    MMMKeyboard.onChange('new value');
 
     expect(document.getElementById('kbInput').value).toBe('new value');
-    expect(MMMKKeyboard.log).toHaveBeenCalledWith('Input changed: new value');
+    expect(MMMKeyboard.log).toHaveBeenCalledWith('Input changed: new value');
   });
 
   it('sets shift state if input is empty', () => {
-    const oldHandleShift = MMMKKeyboard.handleShift;
-    MMMKKeyboard.handleShift = jest.fn();
-    document.body.appendChild(MMMKKeyboard.getDom());
+    const oldHandleShift = MMMKeyboard.handleShift;
+    MMMKeyboard.handleShift = jest.fn();
+    document.body.appendChild(MMMKeyboard.getDom());
 
-    MMMKKeyboard.onChange('');
+    MMMKeyboard.onChange('');
 
-    expect(MMMKKeyboard.shiftState).toBe(1);
-    expect(MMMKKeyboard.handleShift).toHaveBeenCalled();
+    expect(MMMKeyboard.shiftState).toBe(1);
+    expect(MMMKeyboard.handleShift).toHaveBeenCalled();
 
-    MMMKKeyboard.handleShift = oldHandleShift;
+    MMMKeyboard.handleShift = oldHandleShift;
   });
 });
