@@ -6,6 +6,9 @@ require('../__mocks__/Module');
 require('../__mocks__/globalLogger');
 
 const name = 'MMM-Keyboard';
+const shiftStateNormal = 0;
+const shiftStateShift = 1;
+const shiftStateCapsLock = 2;
 
 let MMMKeyboard;
 let oldLog;
@@ -82,20 +85,20 @@ describe('start', () => {
     MMMKeyboard.loadLayouts = jest.fn();
   });
 
-  it('sets shiftState to 1 if starting uppercase', () => {
+  it('sets shiftState to shift if starting uppercase', () => {
     MMMKeyboard.config.startUppercase = true;
 
     MMMKeyboard.start();
 
-    expect(MMMKeyboard.shiftState).toBe(1);
+    expect(MMMKeyboard.shiftState).toBe(shiftStateShift);
   });
 
-  it('sets shiftState to 0 if not starting uppercase', () => {
+  it('sets shiftState to normal if not starting uppercase', () => {
     MMMKeyboard.config.startUppercase = false;
 
     MMMKeyboard.start();
 
-    expect(MMMKeyboard.shiftState).toBe(0);
+    expect(MMMKeyboard.shiftState).toBe(shiftStateNormal);
   });
 
   it('will allow setting language to de', () => {
@@ -251,7 +254,7 @@ describe('sendInput', () => {
       });
     expect(MMMKeyboard.keyboard.clearInput).toHaveBeenCalled();
     expect(document.getElementById('kbInput').value).toBe('');
-    expect(MMMKeyboard.shiftState).toBe(1);
+    expect(MMMKeyboard.shiftState).toBe(shiftStateShift);
     expect(MMMKeyboard.kbContainer.classList)
       .not.toContain('show-keyboard');
 
@@ -276,7 +279,7 @@ describe('onChange', () => {
 
     MMMKeyboard.onChange('');
 
-    expect(MMMKeyboard.shiftState).toBe(1);
+    expect(MMMKeyboard.shiftState).toBe(shiftStateShift);
     expect(MMMKeyboard.handleShift).toHaveBeenCalled();
 
     MMMKeyboard.handleShift = oldHandleShift;
@@ -300,59 +303,59 @@ describe('onKeyPress', () => {
   });
 
   describe('{shift}', () => {
-    it('sets shiftState to 1 from 0', () => {
-      MMMKeyboard.shiftState = 0;
+    it('sets shiftState to shift from normal', () => {
+      MMMKeyboard.shiftState = shiftStateNormal;
 
       MMMKeyboard.onKeyPress('{shift}');
 
-      expect(MMMKeyboard.shiftState).toBe(1);
+      expect(MMMKeyboard.shiftState).toBe(shiftStateShift);
       expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('{shift}');
     });
 
-    it('sets shiftState to 2 from 1', () => {
-      MMMKeyboard.shiftState = 1;
+    it('sets shiftState to caps lock from shift', () => {
+      MMMKeyboard.shiftState = shiftStateShift;
 
       MMMKeyboard.onKeyPress('{shift}');
 
-      expect(MMMKeyboard.shiftState).toBe(2);
+      expect(MMMKeyboard.shiftState).toBe(shiftStateCapsLock);
       expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('{shift}');
     });
 
-    it('sets shiftState to 0 from 2', () => {
-      MMMKeyboard.shiftState = 2;
+    it('sets shiftState to normal from caps lock', () => {
+      MMMKeyboard.shiftState = shiftStateCapsLock;
 
       MMMKeyboard.onKeyPress('{shift}');
 
-      expect(MMMKeyboard.shiftState).toBe(0);
+      expect(MMMKeyboard.shiftState).toBe(shiftStateNormal);
       expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('{shift}');
     });
   });
 
   describe('{lock}', () => {
-    it('sets shiftState to 2 from 0', () => {
-      MMMKeyboard.shiftState = 0;
+    it('sets shiftState to caps lock from normal', () => {
+      MMMKeyboard.shiftState = shiftStateNormal;
 
       MMMKeyboard.onKeyPress('{lock}');
 
-      expect(MMMKeyboard.shiftState).toBe(2);
+      expect(MMMKeyboard.shiftState).toBe(shiftStateCapsLock);
       expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('{lock}');
     });
 
-    it('sets shiftState to 2 from 1', () => {
-      MMMKeyboard.shiftState = 1;
+    it('sets shiftState to caps lock from shift', () => {
+      MMMKeyboard.shiftState = shiftStateShift;
 
       MMMKeyboard.onKeyPress('{lock}');
 
-      expect(MMMKeyboard.shiftState).toBe(2);
+      expect(MMMKeyboard.shiftState).toBe(shiftStateCapsLock);
       expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('{lock}');
     });
 
-    it('sets shiftState to 0 from 2', () => {
-      MMMKeyboard.shiftState = 2;
+    it('sets shiftState to normal from caps lock', () => {
+      MMMKeyboard.shiftState = shiftStateCapsLock;
 
       MMMKeyboard.onKeyPress('{lock}');
 
-      expect(MMMKeyboard.shiftState).toBe(0);
+      expect(MMMKeyboard.shiftState).toBe(shiftStateNormal);
       expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('{lock}');
     });
   });
@@ -394,7 +397,7 @@ describe('onKeyPress', () => {
       MMMKeyboard.onKeyPress('{backspace}');
 
       expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('{backspace}');
-      expect(MMMKeyboard.shiftState).toBe(1);
+      expect(MMMKeyboard.shiftState).toBe(shiftStateShift);
     });
 
     it('does nothing if not startUppercase', () => {
@@ -408,30 +411,30 @@ describe('onKeyPress', () => {
   });
 
   describe('anything else', () => {
-    it('sets shiftState to 0 from 0', () => {
-      MMMKeyboard.shiftState = 0;
+    it('sets shiftState to normal from normal', () => {
+      MMMKeyboard.shiftState = shiftStateNormal;
 
       MMMKeyboard.onKeyPress('foobar');
 
-      expect(MMMKeyboard.shiftState).toBe(0);
+      expect(MMMKeyboard.shiftState).toBe(shiftStateNormal);
       expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('foobar');
     });
 
-    it('sets shiftState to 0 from 1', () => {
-      MMMKeyboard.shiftState = 1;
+    it('sets shiftState to normal from shift', () => {
+      MMMKeyboard.shiftState = shiftStateShift;
 
       MMMKeyboard.onKeyPress('foobar');
 
-      expect(MMMKeyboard.shiftState).toBe(0);
+      expect(MMMKeyboard.shiftState).toBe(shiftStateNormal);
       expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('foobar');
     });
 
-    it('sets shiftState to 2 from 2', () => {
-      MMMKeyboard.shiftState = 2;
+    it('sets shiftState to caps lock from caps lock', () => {
+      MMMKeyboard.shiftState = shiftStateCapsLock;
 
       MMMKeyboard.onKeyPress('foobar');
 
-      expect(MMMKeyboard.shiftState).toBe(2);
+      expect(MMMKeyboard.shiftState).toBe(shiftStateCapsLock);
       expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('foobar');
     });
   });
@@ -454,7 +457,7 @@ describe('handleShift', () => {
   });
 
   it('sets layout to default if shiftState is default', () => {
-    MMMKeyboard.shiftState = 0;
+    MMMKeyboard.shiftState = shiftStateNormal;
 
     MMMKeyboard.handleShift();
 
@@ -465,7 +468,7 @@ describe('handleShift', () => {
   });
 
   it('sets layout to default if shiftState is shift', () => {
-    MMMKeyboard.shiftState = 1;
+    MMMKeyboard.shiftState = shiftStateShift;
 
     MMMKeyboard.handleShift();
 
@@ -476,7 +479,7 @@ describe('handleShift', () => {
   });
 
   it('sets layout to default if shiftState is caps', () => {
-    MMMKeyboard.shiftState = 2;
+    MMMKeyboard.shiftState = shiftStateCapsLock;
 
     MMMKeyboard.handleShift();
 
@@ -546,7 +549,7 @@ describe('buildKeyboard', () => {
   });
 
   it('sets layout to default if shift state is default', () => {
-    MMMKeyboard.shiftState = 0;
+    MMMKeyboard.shiftState = shiftStateNormal;
 
     MMMKeyboard.buildKeyboard();
 
@@ -554,7 +557,7 @@ describe('buildKeyboard', () => {
   });
 
   it('sets layout to shift if shift state is shift', () => {
-    MMMKeyboard.shiftState = 1;
+    MMMKeyboard.shiftState = shiftStateShift;
 
     MMMKeyboard.buildKeyboard();
 
@@ -562,7 +565,7 @@ describe('buildKeyboard', () => {
   });
 
   it('sets layout to shift if shift state is caps', () => {
-    MMMKeyboard.shiftState = 2;
+    MMMKeyboard.shiftState = shiftStateCapsLock;
 
     MMMKeyboard.buildKeyboard();
 

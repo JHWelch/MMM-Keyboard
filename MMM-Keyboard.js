@@ -1,5 +1,9 @@
 /* global Module */
 
+const shiftStateNormal = 0;
+const shiftStateShift = 1;
+const shiftStateCapsLock = 2;
+
 /*jshint esversion: 6 */
 Module.register('MMM-Keyboard', {
   defaults: {
@@ -30,7 +34,9 @@ Module.register('MMM-Keyboard', {
   },
 
   start: function () {
-    this.shiftState = (this.config.startUppercase) ? 1 : 0;
+    this.shiftState = this.config.startUppercase
+      ? shiftStateShift
+      : shiftStateNormal;
     if (!['de', 'en'].includes(this.config.language)) {
       this.config.language = 'en';
     }
@@ -130,7 +136,9 @@ Module.register('MMM-Keyboard', {
     });
     this.keyboard.clearInput();
     document.getElementById('kbInput').value = '';
-    if (this.config.startUppercase) { this.shiftState = 1; }
+    if (this.config.startUppercase) {
+      this.shiftState = shiftStateShift;
+    }
     this.hideKeyboard();
   },
 
@@ -139,7 +147,7 @@ Module.register('MMM-Keyboard', {
     kbInput.value = input;
     this.log('Input changed: ' + input);
     if (kbInput.value == '' && this.config.startUppercase) {
-      this.shiftState = 1;
+      this.shiftState = shiftStateShift;
       this.handleShift();
     }
   },
@@ -150,13 +158,17 @@ Module.register('MMM-Keyboard', {
      */
     switch (button) {
       case '{shift}':
-        this.shiftState = (this.shiftState === 0)
-          ? 1
-          : (this.shiftState === 1) ? 2 : 0;
+        this.shiftState = (this.shiftState === shiftStateNormal)
+          ? shiftStateShift
+          : (this.shiftState === shiftStateShift)
+            ? shiftStateCapsLock
+            : shiftStateNormal;
         this.handleShift(button);
         break;
       case '{lock}':
-        this.shiftState = (this.shiftState < 2) ? 2 : 0;
+        this.shiftState = this.shiftState < shiftStateCapsLock
+          ? shiftStateCapsLock
+          : shiftStateNormal;
         this.handleShift(button);
         break;
       case '{numbers}':
@@ -165,12 +177,14 @@ Module.register('MMM-Keyboard', {
         break;
       case '{backspace}':
         if (document.getElementById('kbInput').value == '' && this.config.startUppercase) {
-          this.shiftState = 1;
+          this.shiftState = shiftStateShift;
           this.handleShift(button);
         };
         break;
       default:
-        this.shiftState = (this.shiftState < 2) ? 0 : 2;
+        this.shiftState = this.shiftState < shiftStateCapsLock
+          ? shiftStateNormal
+          : shiftStateCapsLock;
         this.handleShift(button);
     }
   },
@@ -178,7 +192,9 @@ Module.register('MMM-Keyboard', {
   handleShift: function (button) {
     const layout = (this.keyboard.options.layoutName == 'numbers')
       ? 'numbers'
-      : (this.shiftState == 0) ? 'default' : 'shift';
+      : (this.shiftState === shiftStateNormal)
+        ? 'default'
+        : 'shift';
     this.keyboard.setOptions({
       layoutName: layout,
     });
@@ -205,7 +221,11 @@ Module.register('MMM-Keyboard', {
         this.hideKeyboard();
       }
     });*/
-    const kbLayout = (this.config.startWithNumbers) ? 'numbers' : (this.shiftState == 0) ? 'default' : 'shift';
+    const kbLayout = (this.config.startWithNumbers)
+      ? 'numbers'
+      : (this.shiftState === shiftStateNormal)
+        ? 'default'
+        : 'shift';
     this.log(kbLayout);
     this.log(this.layouts);
     const Keyboard = window.SimpleKeyboard.default;
