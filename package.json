@@ -11,17 +11,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lavolp3/MMM-Keyboard.git"
+    "url": "git+https://github.com/JHWelch/MMM-Keyboard.git"
   },
-  "author": "Dirk Kovert (lavolp3)",
+  "author": "Jordan Welch",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lavolp3/MMM-Keyboard/issues"
+    "url": "https://github.com/JHWelch/MMM-Keyboard/issues"
   },
-  "homepage": "https://github.com/lavolp3/MMM-Keyboard#readme",
+  "homepage": "https://github.com/JHWelch/MMM-Keyboard#readme",
   "dependencies": {
     "simple-keyboard": "^3.8.190"
   },
+  "contributors": ["Dirk Kovert (lavolp3)"],
   "devDependencies": {
     "@jhwelch/mmm-eslint-config": "^5.0.0",
     "eslint": "^10.11.0",
