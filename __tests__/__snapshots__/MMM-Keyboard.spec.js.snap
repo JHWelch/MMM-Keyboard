@@ -1,5 +1,72 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
+exports[`getDom can generate a dom for debug 1`] = `
+<div
+  class="keyboardWrapper"
+>
+  <div
+    class="kbButton fas fa-keyboard"
+  />
+  <div
+    class="kbContainer"
+  >
+    <div
+      id="inputDiv"
+      style="display: none;"
+    >
+      <input
+        id="kbInput"
+        type="text"
+      />
+      <button
+        class="sendButton"
+        name="sendButton"
+      />
+      <button
+        class="sendButton"
+        name="hideButton"
+        style="background-color: rgb(136, 0, 0);"
+      />
+    </div>
+    <div
+      class="simple-keyboard"
+    />
+  </div>
+</div>
+`;
+
+exports[`getDom returns the generated dom 1`] = `
+<div
+  class="keyboardWrapper"
+>
+  <div
+    class="kbContainer"
+  >
+    <div
+      id="inputDiv"
+      style="display: none;"
+    >
+      <input
+        id="kbInput"
+        type="text"
+      />
+      <button
+        class="sendButton"
+        name="sendButton"
+      />
+      <button
+        class="sendButton"
+        name="hideButton"
+        style="background-color: rgb(136, 0, 0);"
+      />
+    </div>
+    <div
+      class="simple-keyboard"
+    />
+  </div>
+</div>
+`;
+
 exports[`loadLayouts loads the layouts into memory 1`] = `
 {
   "de": {

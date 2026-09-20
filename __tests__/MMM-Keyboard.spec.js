@@ -143,3 +143,15 @@ describe('loadLayouts', () => {
     expect(MMMKKeyboard.buildKeyboard).toHaveBeenCalled();
   });
 });
+
+describe('getDom', () => {
+  it('returns the generated dom', () => {
+    expect(MMMKKeyboard.getDom()).toMatchSnapshot();
+  });
+
+  it('can generate a dom for debug', () => {
+    MMMKKeyboard.config.debug = true;
+
+    expect(MMMKKeyboard.getDom()).toMatchSnapshot();
+  });
+});
