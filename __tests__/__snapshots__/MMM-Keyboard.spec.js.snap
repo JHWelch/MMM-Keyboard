@@ -1,5 +1,48 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
+exports[`buildKeyboard builds a new keyboard 1`] = `
+{
+  "buttonTheme": [
+    {
+      "buttons": "{shift} {ent} {escape} {lock} {tab} {altleft} {altright} {abc} {numbers} {backspace} 0",
+      "class": "specialButton",
+    },
+    {
+      "buttons": "{space}",
+      "class": "spaceButton",
+    },
+    {
+      "buttons": " ",
+      "class": "emptyButton",
+    },
+  ],
+  "display": {
+    "{abc}": "ABC",
+    "{altleft}": "alt",
+    "{altright}": "alt",
+    "{backspace}": "  ⇦  ",
+    "{controlleft}": "ctrl",
+    "{controlright}": "ctrl",
+    "{ent}": "return",
+    "{escape}": "esc",
+    "{lock}": "  ⇮  ",
+    "{metaleft}": "cmd",
+    "{metaright}": "cmd",
+    "{numbers}": "123",
+    "{shift}": "  ⇧  ",
+    "{tab}": "tab",
+  },
+  "inputName": "kbInput",
+  "layout": {
+    "layout": "English",
+  },
+  "layoutName": "shift",
+  "mergeDisplay": true,
+  "onChange": [Function],
+  "onKeyPress": [Function],
+}
+`;
+
 exports[`getDom can generate a dom for debug 1`] = `
 <div
   class="keyboardWrapper"

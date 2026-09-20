@@ -30,6 +30,7 @@ beforeEach(() => {
 
 afterEach(() => {
   MMMKeyboard.log = oldLog;
+  document.getElementsByTagName('html')[0].innerHTML = '';
 });
 
 describe('defaults', () => {
@@ -373,6 +374,12 @@ describe('onKeyPress', () => {
   });
 
   describe('{backspace}', () => {
+    beforeEach(() => {
+      const kbInput = document.createElement('input');
+      kbInput.id = 'kbInput';
+      document.body.appendChild(kbInput);
+    });
+
     it('does nothing if there is still input', () => {
       document.getElementById('kbInput').value = 'something';
 
@@ -427,5 +434,197 @@ describe('onKeyPress', () => {
       expect(MMMKeyboard.shiftState).toBe(2);
       expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('foobar');
     });
+  });
+});
+
+describe('handleShift', () => {
+  beforeEach(() => {
+    MMMKeyboard.showKeyboard = jest.fn();
+  });
+
+  it('sets layout to numbers if already set in keyboard', () => {
+    MMMKeyboard.keyboard.options.layoutName = 'numbers';
+
+    MMMKeyboard.handleShift();
+
+    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+      layoutName: 'numbers',
+    });
+    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
+  });
+
+  it('sets layout to default if shiftState is default', () => {
+    MMMKeyboard.shiftState = 0;
+
+    MMMKeyboard.handleShift();
+
+    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+      layoutName: 'default',
+    });
+    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
+  });
+
+  it('sets layout to default if shiftState is shift', () => {
+    MMMKeyboard.shiftState = 1;
+
+    MMMKeyboard.handleShift();
+
+    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+      layoutName: 'shift',
+    });
+    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
+  });
+
+  it('sets layout to default if shiftState is caps', () => {
+    MMMKeyboard.shiftState = 2;
+
+    MMMKeyboard.handleShift();
+
+    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+      layoutName: 'shift',
+    });
+    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
+  });
+});
+
+describe('handleNumbers', () => {
+  beforeEach(() => {
+    MMMKeyboard.showKeyboard = jest.fn();
+  });
+
+  it('sets layout to default if already set in keyboard', () => {
+    MMMKeyboard.keyboard.options.layoutName = 'numbers';
+
+    MMMKeyboard.handleNumbers();
+
+    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+      layoutName: 'default',
+    });
+    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
+  });
+
+  it('sets layout to numbers if not already keyboard numbers', () => {
+    MMMKeyboard.keyboard.options.layoutName = 'default';
+
+    MMMKeyboard.handleNumbers();
+
+    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+      layoutName: 'numbers',
+    });
+    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
+  });
+});
+
+describe('buildKeyboard', () => {
+  beforeEach(() => {
+    window.SimpleKeyboard = {};
+    window.SimpleKeyboard.default = class {
+      data = {};
+
+      constructor (data) {
+        this.data = data;
+      }
+    };
+    MMMKeyboard.layouts = {
+      en: { layout: 'English'},
+      de: { layout: 'Deutsch'},
+    };
+  });
+
+  it('builds a new keyboard', () => {
+    MMMKeyboard.buildKeyboard();
+
+    expect(MMMKeyboard.keyboard.data).toMatchSnapshot();
+  });
+
+  it('sets layout to numbers if starts with numbers', () => {
+    MMMKeyboard.config.startWithNumbers = true;
+
+    MMMKeyboard.buildKeyboard();
+
+    expect(MMMKeyboard.keyboard.data.layoutName).toBe('numbers');
+  });
+
+  it('sets layout to default if shift state is default', () => {
+    MMMKeyboard.shiftState = 0;
+
+    MMMKeyboard.buildKeyboard();
+
+    expect(MMMKeyboard.keyboard.data.layoutName).toBe('default');
+  });
+
+  it('sets layout to shift if shift state is shift', () => {
+    MMMKeyboard.shiftState = 1;
+
+    MMMKeyboard.buildKeyboard();
+
+    expect(MMMKeyboard.keyboard.data.layoutName).toBe('shift');
+  });
+
+  it('sets layout to shift if shift state is caps', () => {
+    MMMKeyboard.shiftState = 2;
+
+    MMMKeyboard.buildKeyboard();
+
+    expect(MMMKeyboard.keyboard.data.layoutName).toBe('shift');
+  });
+});
+
+describe('showKeyboard', () => {
+  it('sets appropriate attributes', () => {
+    MMMKeyboard.kbContainer = document.createElement('div');
+    const inputDiv = document.createElement('div');
+    inputDiv.id = 'inputDiv';
+    const kbInput = document.createElement('div');
+    kbInput.id = 'kbInput';
+    document.body.appendChild(inputDiv);
+    document.body.appendChild(kbInput);
+
+    MMMKeyboard.showKeyboard();
+
+    expect(MMMKeyboard.kbContainer.classList).toContain('show-keyboard');
+    expect(document.getElementById('inputDiv').style.display).toBe('block');
+    expect(document.getElementById('kbInput').value).toBe('test-input');
+  });
+});
+
+describe('hideKeyboard', () => {
+  it('sets appropriate attributes', () => {
+    MMMKeyboard.kbContainer = document.createElement('div');
+    MMMKeyboard.kbContainer.classList.add('show-keyboard');
+
+    MMMKeyboard.hideKeyboard();
+
+    expect(MMMKeyboard.kbContainer.classList).not.toContain('show-keyboard');
+  });
+
+  it('enables kbButton if debug is set', () => {
+    MMMKeyboard.config.debug = true;
+    MMMKeyboard.kbContainer = document.createElement('div');
+    MMMKeyboard.kbContainer.classList.add('show-keyboard');
+    const kbButton = document.createElement('div');
+    kbButton.classList.add('kbButton');
+    kbButton.style.display = 'none';
+    document.body.appendChild(kbButton);
+
+    MMMKeyboard.hideKeyboard();
+
+    expect(document.getElementsByClassName('kbButton')[0].style.display)
+      .toBe('block');
+  });
+
+  it('does not enable kbButton if debug is set', () => {
+    MMMKeyboard.config.debug = false;
+    MMMKeyboard.kbContainer = document.createElement('div');
+    MMMKeyboard.kbContainer.classList.add('show-keyboard');
+    const kbButton = document.createElement('div');
+    kbButton.classList.add('kbButton');
+    kbButton.style.display = 'none';
+    document.body.appendChild(kbButton);
+
+    MMMKeyboard.hideKeyboard();
+
+    expect(document.getElementsByClassName('kbButton')[0].style.display)
+      .toBe('none');
   });
 });
