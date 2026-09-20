@@ -507,3 +507,58 @@ describe('handleNumbers', () => {
     expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
   });
 });
+
+describe('buildKeyboard', () => {
+  beforeEach(() => {
+    window.SimpleKeyboard = {};
+    window.SimpleKeyboard.default = class {
+      data = {};
+
+      constructor (data) {
+        this.data = data;
+      }
+    };
+    MMMKeyboard.layouts = {
+      en: { layout: 'English'},
+      de: { layout: 'Deutsch'},
+    };
+  });
+
+  it('builds a new keyboard', () => {
+    MMMKeyboard.buildKeyboard();
+
+    expect(MMMKeyboard.keyboard.data).toMatchSnapshot();
+  });
+
+  it('sets layout to numbers if starts with numbers', () => {
+    MMMKeyboard.config.startWithNumbers = true;
+
+    MMMKeyboard.buildKeyboard();
+
+    expect(MMMKeyboard.keyboard.data.layoutName).toBe('numbers');
+  });
+
+  it('sets layout to default if shift state is default', () => {
+    MMMKeyboard.shiftState = 0;
+
+    MMMKeyboard.buildKeyboard();
+
+    expect(MMMKeyboard.keyboard.data.layoutName).toBe('default');
+  });
+
+  it('sets layout to shift if shift state is shift', () => {
+    MMMKeyboard.shiftState = 1;
+
+    MMMKeyboard.buildKeyboard();
+
+    expect(MMMKeyboard.keyboard.data.layoutName).toBe('shift');
+  });
+
+  it('sets layout to shift if shift state is caps', () => {
+    MMMKeyboard.shiftState = 2;
+
+    MMMKeyboard.buildKeyboard();
+
+    expect(MMMKeyboard.keyboard.data.layoutName).toBe('shift');
+  });
+});
