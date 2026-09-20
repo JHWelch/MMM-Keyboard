@@ -119,8 +119,8 @@ Module.register('MMM-Keyboard', {
       this.log('MMM-Keyboard recognized a notification: ' + notification + JSON.stringify(payload));
       this.log('Activating Keyboard!');
       this.current = payload;
-      const layoutName = (payload.style == 'default')
-        ? ((this.config.startUppercase) ? 'shift' : 'default')
+      const layoutName = payload.style == 'default'
+        ? (this.config.startUppercase ? 'shift' : 'default')
         : 'numbers';
       this.keyboard.setOptions({layoutName});
       this.showKeyboard();
@@ -221,12 +221,6 @@ Module.register('MMM-Keyboard', {
         this.hideKeyboard();
       }
     });*/
-    const kbLayout = (this.config.startWithNumbers)
-      ? 'numbers'
-      : (this.shiftState === shiftStateNormal)
-        ? 'default'
-        : 'shift';
-    this.log(kbLayout);
     this.log(this.layouts);
     const Keyboard = window.SimpleKeyboard.default;
     this.keyboard = new Keyboard({
@@ -234,7 +228,7 @@ Module.register('MMM-Keyboard', {
       onKeyPress: button => this.onKeyPress(button),
       mergeDisplay: true,
       inputName: 'kbInput',
-      layoutName: kbLayout,
+      layoutName: this.layout(),
       layout: this.layouts[this.config.language],
       buttonTheme: [
         {
@@ -267,6 +261,16 @@ Module.register('MMM-Keyboard', {
         '{abc}': 'ABC',
       },
     });
+  },
+
+  layout: function () {
+    if (this.config.startWithNumbers) {
+      return 'numbers';
+    }
+
+    return this.shiftState === shiftStateNormal
+      ? 'default'
+      : 'shift';
   },
 
   showKeyboard: function () {
