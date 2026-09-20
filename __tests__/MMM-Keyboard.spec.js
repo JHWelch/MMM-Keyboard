@@ -8,6 +8,7 @@ require('../__mocks__/globalLogger');
 const name = 'MMM-Keyboard';
 
 let MMMKKeyboard;
+let oldLog
 
 beforeEach(() => {
   jest.resetModules();
@@ -15,7 +16,18 @@ beforeEach(() => {
 
   MMMKKeyboard = global.Module.create(name);
   MMMKKeyboard.setData({ name, identifier: `Module_1_${name}` });
+  oldLog = MMMKKeyboard.log;
+  MMMKKeyboard.log = jest.fn();
+  MMMKKeyboard.keyboard = {
+    setOptions: jest.fn(),
+    getInput: jest.fn().mockReturnValue('test-input'),
+    clearInput: jest.fn(),
+  };
 });
+
+afterEach(() => {
+  MMMKKeyboard.log = oldLog;
+})
 
 describe('defaults', () => {
   it('has a default config', () => {
@@ -158,24 +170,13 @@ describe('getDom', () => {
 
 describe('notificationReceived', () => {
   it('logs a message for `DOM_OBJECTS_CREATED`', () => {
-    const oldLog = MMMKKeyboard.log;
-    MMMKKeyboard.log = jest.fn();
-
     MMMKKeyboard.notificationReceived('DOM_OBJECTS_CREATED');
 
     expect(MMMKKeyboard.log)
       .toHaveBeenCalledWith('MMM-Keyboard: Initializing keyboard');
-
-    MMMKKeyboard.log = oldLog;
   });
 
   it('activates keyboard for `KEYBOARD`', () => {
-    const oldLog = MMMKKeyboard.log;
-    MMMKKeyboard.log = jest.fn();
-    MMMKKeyboard.keyboard = {
-      setOptions: jest.fn(),
-      getInput: jest.fn().mockReturnValue('test-input'),
-    };
     document.body.appendChild(MMMKKeyboard.getDom());
 
     MMMKKeyboard.notificationReceived('KEYBOARD', {
@@ -203,19 +204,12 @@ describe('notificationReceived', () => {
       .toBe('test-input');
     expect(document.getElementById('inputDiv').style.display)
       .toBe('block');
-
-    MMMKKeyboard.log = oldLog;
   });
 });
 
 describe('sendInput', () => {
   it('sends KEYBOARD_INPUT with message', () => {
-    const oldLog = MMMKKeyboard.log;
     const oldSendNotification = MMMKKeyboard.sendNotification;
-    MMMKKeyboard.keyboard = {
-      clearInput: jest.fn(),
-    };
-    MMMKKeyboard.log = jest.fn();
     MMMKKeyboard.sendNotification = jest.fn();
     MMMKKeyboard.currentKey = 'test-key';
     MMMKKeyboard.currentData = { foo: 'bar' };
@@ -241,7 +235,6 @@ describe('sendInput', () => {
     expect(MMMKKeyboard.kbContainer.classList)
       .not.toContain('show-keyboard');
 
-    MMMKKeyboard.log = oldLog;
     MMMKKeyboard.sendNotification = oldSendNotification;
   });
 });
