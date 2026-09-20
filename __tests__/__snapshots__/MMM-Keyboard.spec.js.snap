@@ -23,9 +23,8 @@ exports[`getDom can generate a dom for debug 1`] = `
         name="sendButton"
       />
       <button
-        class="sendButton"
+        class="hideButton"
         name="hideButton"
-        style="background-color: rgb(136, 0, 0);"
       />
     </div>
     <div
@@ -55,9 +54,8 @@ exports[`getDom returns the generated dom 1`] = `
         name="sendButton"
       />
       <button
-        class="sendButton"
+        class="hideButton"
         name="hideButton"
-        style="background-color: rgb(136, 0, 0);"
       />
     </div>
     <div

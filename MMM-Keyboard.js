@@ -82,9 +82,8 @@ Module.register('MMM-Keyboard', {
       this.sendInput();
     };
     const hideButton = document.createElement('button');
-    hideButton.className = 'sendButton';
+    hideButton.className = 'hideButton';
     hideButton.innerText = '\u21e7';
-    hideButton.style.backgroundColor = '#880000';
     hideButton.setAttribute('name', 'hideButton');
     hideButton.onclick = () => {
       this.hideKeyboard();
