@@ -2,7 +2,6 @@
 
 /*jshint esversion: 6 */
 Module.register('MMM-Keyboard', {
-
   defaults: {
     showAlways: false,
     layout: 'default',
@@ -37,8 +36,8 @@ Module.register('MMM-Keyboard', {
 
   loadLayouts: function () {
     this.log('Loading keyboard layouts');
-    var xobj = new XMLHttpRequest();
-    var self = this;
+    const xobj = new XMLHttpRequest();
+    const self = this;
     xobj.overrideMimeType('application/json');
     xobj.open('GET', this.file('layouts.json'), true);
     xobj.onreadystatechange = function () {
@@ -52,10 +51,10 @@ Module.register('MMM-Keyboard', {
   },
 
   getDom: function () {
-    var container = document.createElement('div');
+    const container = document.createElement('div');
     container.className = 'keyboardWrapper';
     if (this.config.debug) {
-      var kbButton = document.createElement('div');
+      const kbButton = document.createElement('div');
       kbButton.width = '100px';
       kbButton.className = 'kbButton fas fa-keyboard';
       kbButton.addEventListener('click', _event => {
@@ -66,26 +65,25 @@ Module.register('MMM-Keyboard', {
     }
     this.kbContainer = document.createElement('div');
     this.kbContainer.className = 'kbContainer';
-    var inputDiv = document.createElement('div');
+    const inputDiv = document.createElement('div');
     inputDiv.id = 'inputDiv';
     inputDiv.style.display = 'none';
-    var input = document.createElement('input');
+    const input = document.createElement('input');
     input.id = 'kbInput';
     input.setAttribute('type', 'text');
     input.addEventListener('input', event => {
       this.keyboard.setInput(event.target.value);
     });
-    var send = document.createElement('button');
+    const send = document.createElement('button');
     send.className = 'sendButton';
     send.innerText = '  SEND!  ';
     send.setAttribute('name', 'sendButton');
     send.onclick = () => {
       this.sendInput();
     };
-    var hideButton = document.createElement('button');
-    hideButton.className = 'sendButton';
+    const hideButton = document.createElement('button');
+    hideButton.className = 'hideButton';
     hideButton.innerText = '\u21e7';
-    hideButton.style.backgroundColor = '#880000';
     hideButton.setAttribute('name', 'hideButton');
     hideButton.onclick = () => {
       this.hideKeyboard();
@@ -96,7 +94,7 @@ Module.register('MMM-Keyboard', {
     inputDiv.appendChild(send);
     inputDiv.appendChild(hideButton);
     this.kbContainer.appendChild(inputDiv);
-    var kb = document.createElement('div');
+    const kb = document.createElement('div');
     kb.className = 'simple-keyboard';
     this.kbContainer.appendChild(kb);
     container.appendChild(this.kbContainer);
@@ -104,27 +102,31 @@ Module.register('MMM-Keyboard', {
     return container;
   },
 
-  notificationReceived: function (noti, payload) {
-    if (noti == 'DOM_OBJECTS_CREATED') {
+  notificationReceived: function (notification, payload) {
+    if (notification === 'DOM_OBJECTS_CREATED') {
       this.log('MMM-Keyboard: Initializing keyboard');
       //Add event listener on first implementation of keyboard.
-    } else if (noti == 'KEYBOARD') {
-      this.log('MMM-Keyboard recognized a notification: ' + noti + JSON.stringify(payload));
+    } else if (notification === 'KEYBOARD') {
+      this.log('MMM-Keyboard recognized a notification: ' + notification + JSON.stringify(payload));
       this.log('Activating Keyboard!');
       this.currentKey = payload.key;
       this.currentData = payload.data;
-      var layout = (payload.style == 'default') ? ((this.config.startUppercase) ? 'shift' : 'default') : 'numbers';
-      this.keyboard.setOptions({
-        layoutName: layout,
-      });
+      const layoutName = (payload.style == 'default')
+        ? ((this.config.startUppercase) ? 'shift' : 'default')
+        : 'numbers';
+      this.keyboard.setOptions({layoutName});
       this.showKeyboard();
     }
   },
 
   sendInput: function () {
-    var message = document.getElementById('kbInput').value;
+    const message = document.getElementById('kbInput').value;
     this.log('MMM-Keyboard sent input: ' + message);
-    this.sendNotification('KEYBOARD_INPUT', { key: this.currentKey, message: message, data: this.currentData });
+    this.sendNotification('KEYBOARD_INPUT', {
+      key: this.currentKey,
+      message: message,
+      data: this.currentData,
+    });
     this.keyboard.clearInput();
     document.getElementById('kbInput').value = '';
     if (this.config.startUppercase) { this.shiftState = 1; }
@@ -137,14 +139,13 @@ Module.register('MMM-Keyboard', {
   },
 
   onChange: function (input) {
-    var kbInput = document.getElementById('kbInput');
+    const kbInput = document.getElementById('kbInput');
     kbInput.value = input;
     this.log('Input changed: ' + input);
     if (kbInput.value == '' && this.config.startUppercase) {
       this.shiftState = 1;
       this.handleShift();
     }
-
   },
 
   onKeyPress: function (button) {
@@ -179,7 +180,9 @@ Module.register('MMM-Keyboard', {
   },
 
   handleShift: function (button) {
-    var layout = (this.keyboard.options.layoutName == 'numbers') ? 'numbers' : (this.shiftState == 0) ? 'default' : 'shift';
+    const layout = (this.keyboard.options.layoutName == 'numbers')
+      ? 'numbers'
+      : (this.shiftState == 0) ? 'default' : 'shift';
     this.keyboard.setOptions({
       layoutName: layout,
     });
@@ -188,8 +191,8 @@ Module.register('MMM-Keyboard', {
   },
 
   handleNumbers: function () {
-    var currentLayout = this.keyboard.options.layoutName;
-    var numbersToggle = currentLayout !== 'numbers' ? 'numbers' : 'default';
+    const currentLayout = this.keyboard.options.layoutName;
+    const numbersToggle = currentLayout !== 'numbers' ? 'numbers' : 'default';
     this.keyboard.setOptions({
       layoutName: numbersToggle,
     });
@@ -206,10 +209,10 @@ Module.register('MMM-Keyboard', {
         this.hideKeyboard();
       }
     });*/
-    var kbLayout = (this.config.startWithNumbers) ? 'numbers' : (this.shiftState == 0) ? 'default' : 'shift';
+    const kbLayout = (this.config.startWithNumbers) ? 'numbers' : (this.shiftState == 0) ? 'default' : 'shift';
     this.log(kbLayout);
     this.log(this.layouts);
-    var Keyboard = window.SimpleKeyboard.default;
+    const Keyboard = window.SimpleKeyboard.default;
     this.keyboard = new Keyboard({
       onChange: input => this.onChange(input),
       onKeyPress: button => this.onKeyPress(button),
@@ -268,5 +271,4 @@ Module.register('MMM-Keyboard', {
       console.log(this.name + ':', JSON.stringify(msg)); // eslint-disable-line no-console
     }
   },
-
 });
