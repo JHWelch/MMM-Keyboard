@@ -155,3 +155,55 @@ describe('getDom', () => {
     expect(MMMKKeyboard.getDom()).toMatchSnapshot();
   });
 });
+
+describe('notificationReceived', () => {
+  it('logs a message for `DOM_OBJECTS_CREATED`', () => {
+    const oldLog = MMMKKeyboard.log;
+    MMMKKeyboard.log = jest.fn();
+
+    MMMKKeyboard.notificationReceived('DOM_OBJECTS_CREATED');
+
+    expect(MMMKKeyboard.log)
+      .toHaveBeenCalledWith('MMM-Keyboard: Initializing keyboard');
+
+    MMMKKeyboard.log = oldLog;
+  });
+
+  it('activates keyboard for `KEYBOARD`', () => {
+    const oldLog = MMMKKeyboard.log;
+    MMMKKeyboard.log = jest.fn();
+    MMMKKeyboard.keyboard = {
+      setOptions: jest.fn(),
+      getInput: jest.fn().mockReturnValue('test-input'),
+    };
+    document.body.appendChild(MMMKKeyboard.getDom());
+
+    MMMKKeyboard.notificationReceived('KEYBOARD', {
+      key: 'test-key',
+      style: 'default',
+      data: {
+        test: 'data',
+        foo: 'bar',
+      },
+    });
+
+    expect(MMMKKeyboard.log)
+      .toHaveBeenCalledWith('MMM-Keyboard recognized a notification: KEYBOARD{"key":"test-key","style":"default","data":{"test":"data","foo":"bar"}}');
+    expect(MMMKKeyboard.log)
+      .toHaveBeenCalledWith('Activating Keyboard!');
+    expect(MMMKKeyboard.currentKey).toBe('test-key');
+    expect(MMMKKeyboard.currentData).toEqual({
+      test: 'data',
+      foo: 'bar',
+    });
+    expect(MMMKKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+      layoutName: 'shift',
+    });
+    expect(document.getElementById('kbInput').value)
+      .toBe('test-input');
+    expect(document.getElementById('inputDiv').style.display)
+      .toBe('block');
+
+    MMMKKeyboard.log = oldLog;
+  });
+});
