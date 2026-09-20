@@ -207,3 +207,41 @@ describe('notificationReceived', () => {
     MMMKKeyboard.log = oldLog;
   });
 });
+
+describe('sendInput', () => {
+  it('sends KEYBOARD_INPUT with message', () => {
+    const oldLog = MMMKKeyboard.log;
+    const oldSendNotification = MMMKKeyboard.sendNotification;
+    MMMKKeyboard.keyboard = {
+      clearInput: jest.fn(),
+    };
+    MMMKKeyboard.log = jest.fn();
+    MMMKKeyboard.sendNotification = jest.fn();
+    MMMKKeyboard.currentKey = 'test-key';
+    MMMKKeyboard.currentData = { foo: 'bar' };
+
+    document.body.appendChild(MMMKKeyboard.getDom());
+    document.getElementById('kbInput').value = 'User input';
+
+    MMMKKeyboard.kbContainer.classList.add('show-keyboard');
+
+    MMMKKeyboard.sendInput();
+
+    expect(MMMKKeyboard.sendNotification)
+      .toHaveBeenCalledWith('KEYBOARD_INPUT', {
+        key: 'test-key',
+        message: 'User input',
+        data: {
+          foo: 'bar',
+        },
+      });
+    expect(MMMKKeyboard.keyboard.clearInput).toHaveBeenCalled();
+    expect(document.getElementById('kbInput').value).toBe('');
+    expect(MMMKKeyboard.shiftState).toBe(1);
+    expect(MMMKKeyboard.kbContainer.classList)
+      .not.toContain('show-keyboard');
+
+    MMMKKeyboard.log = oldLog;
+    MMMKKeyboard.sendNotification = oldSendNotification;
+  });
+});
