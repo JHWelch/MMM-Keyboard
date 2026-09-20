@@ -2,7 +2,9 @@
 
 ![Example image](screenshot.png)
 
-A module for the [MagicMirror²](https://github.com/MichMich/MagicMirror/) that creates a virtual keyboard to be used to send commands or text to other modules
+A module for the [MagicMirror²](https://github.com/MichMich/MagicMirror/) that creates a virtual keyboard to be used to send commands or text to other modules.
+
+This is a drop in replacement for the original [MMM-Keyboard](https://github.com/lavolp3/MMM-Keyboard) with some added configuration and functionality for module developers. It should work for all modules designed for the original as well.
 
 ## Features
  * Touch Support
