@@ -265,3 +265,151 @@ describe('onChange', () => {
     MMMKeyboard.handleShift = oldHandleShift;
   });
 });
+
+describe('onKeyPress', () => {
+  let oldHandleShift;
+  let oldHandleNumbers;
+
+  beforeEach(() => {
+    oldHandleShift = MMMKeyboard.handleShift;
+    oldHandleNumbers = MMMKeyboard.handleNumbers;
+    MMMKeyboard.handleShift = jest.fn();
+    MMMKeyboard.handleNumbers = jest.fn();
+  });
+
+  afterEach(() => {
+    MMMKeyboard.handleShift = oldHandleShift;
+    MMMKeyboard.handleNumbers = oldHandleNumbers;
+  });
+
+  describe('{shift}', () => {
+    it('sets shiftState to 1 from 0', () => {
+      MMMKeyboard.shiftState = 0;
+
+      MMMKeyboard.onKeyPress('{shift}');
+
+      expect(MMMKeyboard.shiftState).toBe(1);
+      expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('{shift}');
+    });
+
+    it('sets shiftState to 2 from 1', () => {
+      MMMKeyboard.shiftState = 1;
+
+      MMMKeyboard.onKeyPress('{shift}');
+
+      expect(MMMKeyboard.shiftState).toBe(2);
+      expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('{shift}');
+    });
+
+    it('sets shiftState to 0 from 2', () => {
+      MMMKeyboard.shiftState = 2;
+
+      MMMKeyboard.onKeyPress('{shift}');
+
+      expect(MMMKeyboard.shiftState).toBe(0);
+      expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('{shift}');
+    });
+  });
+
+  describe('{lock}', () => {
+    it('sets shiftState to 2 from 0', () => {
+      MMMKeyboard.shiftState = 0;
+
+      MMMKeyboard.onKeyPress('{lock}');
+
+      expect(MMMKeyboard.shiftState).toBe(2);
+      expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('{lock}');
+    });
+
+    it('sets shiftState to 2 from 1', () => {
+      MMMKeyboard.shiftState = 1;
+
+      MMMKeyboard.onKeyPress('{lock}');
+
+      expect(MMMKeyboard.shiftState).toBe(2);
+      expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('{lock}');
+    });
+
+    it('sets shiftState to 0 from 2', () => {
+      MMMKeyboard.shiftState = 2;
+
+      MMMKeyboard.onKeyPress('{lock}');
+
+      expect(MMMKeyboard.shiftState).toBe(0);
+      expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('{lock}');
+    });
+  });
+
+  describe('{numbers}', () => {
+    it('calls handleNumbers', () => {
+      MMMKeyboard.onKeyPress('{numbers}');
+
+      expect(MMMKeyboard.handleNumbers).toHaveBeenCalled();
+    });
+  });
+
+  describe('{backspace}', () => {
+    it('calls handleNumbers', () => {
+      MMMKeyboard.onKeyPress('{abc}');
+
+      expect(MMMKeyboard.handleNumbers).toHaveBeenCalled();
+    });
+  });
+
+  describe('{backspace}', () => {
+    it('does nothing if there is still input', () => {
+      document.getElementById('kbInput').value = 'something';
+
+      MMMKeyboard.onKeyPress('{backspace}');
+
+      expect(MMMKeyboard.handleShift).not.toHaveBeenCalled();
+    });
+
+    it('sets shift state and handles shift with value', () => {
+      document.getElementById('kbInput').value = '';
+
+      MMMKeyboard.onKeyPress('{backspace}');
+
+      expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('{backspace}');
+      expect(MMMKeyboard.shiftState).toBe(1);
+    });
+
+    it('does nothing if not startUppercase', () => {
+      MMMKeyboard.config.startUppercase = false;
+      document.getElementById('kbInput').value = '';
+
+      MMMKeyboard.onKeyPress('{backspace}');
+
+      expect(MMMKeyboard.handleShift).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('anything else', () => {
+    it('sets shiftState to 0 from 0', () => {
+      MMMKeyboard.shiftState = 0;
+
+      MMMKeyboard.onKeyPress('foobar');
+
+      expect(MMMKeyboard.shiftState).toBe(0);
+      expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('foobar');
+    });
+
+    it('sets shiftState to 0 from 1', () => {
+      MMMKeyboard.shiftState = 1;
+
+      MMMKeyboard.onKeyPress('foobar');
+
+      expect(MMMKeyboard.shiftState).toBe(0);
+      expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('foobar');
+    });
+
+    it('sets shiftState to 2 from 2', () => {
+      MMMKeyboard.shiftState = 2;
+
+      MMMKeyboard.onKeyPress('foobar');
+
+      expect(MMMKeyboard.shiftState).toBe(2);
+      expect(MMMKeyboard.handleShift).toHaveBeenCalledWith('foobar');
+    });
+  });
+});
