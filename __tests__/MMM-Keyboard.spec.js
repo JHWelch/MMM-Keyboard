@@ -37,6 +37,7 @@ describe('defaults', () => {
     expect(MMMKeyboard.defaults).toEqual({
       showAlways: false,
       layout: 'default',
+      sendLabel: 'SEND!',
       language: 'en',
       startUppercase: true,
       startWithNumbers: false,
