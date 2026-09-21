@@ -152,8 +152,10 @@ Module.register('MMM-Keyboard', {
   sendInput: function () {
     const message = document.getElementById('kbInput').value;
     this.log('MMM-Keyboard sent input: ' + message);
+    const {key, data} = this.current;
     this.sendNotification('KEYBOARD_INPUT', {
-      ...this.current,
+      key,
+      data,
       message,
     });
     this.keyboard.clearInput();

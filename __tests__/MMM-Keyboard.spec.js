@@ -301,7 +301,6 @@ describe('notificationReceived', () => {
 
 describe('sendInput', () => {
   it('sends KEYBOARD_INPUT with message', () => {
-    const oldSendNotification = MMMKeyboard.sendNotification;
     MMMKeyboard.sendNotification = jest.fn();
     MMMKeyboard.current = {
       key: 'test-key',
@@ -328,8 +327,30 @@ describe('sendInput', () => {
     expect(MMMKeyboard.shiftState).toBe(shiftStateShift);
     expect(MMMKeyboard.kbContainer.classList)
       .not.toContain('show-keyboard');
+  });
 
-    MMMKeyboard.sendNotification = oldSendNotification;
+  it('does not include extraneous parameters', () => {
+    MMMKeyboard.sendNotification = jest.fn();
+    MMMKeyboard.current = {
+      key: 'test-key',
+      data: { foo: 'bar' },
+      sendLabel: 'senddddd',
+      value: 'old value',
+    };
+
+    document.body.appendChild(MMMKeyboard.getDom());
+    document.getElementById('kbInput').value = 'User input';
+
+    MMMKeyboard.kbContainer.classList.add('show-keyboard');
+
+    MMMKeyboard.sendInput();
+
+    expect(MMMKeyboard.sendNotification)
+      .toHaveBeenCalledWith('KEYBOARD_INPUT', {
+        key: 'test-key',
+        message: 'User input',
+        data: {foo: 'bar'},
+      });
   });
 });
 
