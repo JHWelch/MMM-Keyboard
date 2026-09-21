@@ -22,8 +22,12 @@ beforeEach(() => {
   oldLog = MMMKeyboard.log;
   MMMKeyboard.log = jest.fn();
   MMMKeyboard.keyboard = {
+    value: 'test-input',
     setOptions: jest.fn(),
-    getInput: jest.fn().mockReturnValue('test-input'),
+    getInput: jest.fn().mockImplementation(() => MMMKeyboard.keyboard.value),
+    setInput: jest.fn().mockImplementation(
+      (value) => MMMKeyboard.keyboard.value = value,
+    ),
     clearInput: jest.fn(),
     options: {
       layoutName: 'default',
@@ -206,34 +210,92 @@ describe('notificationReceived', () => {
       .toHaveBeenCalledWith('MMM-Keyboard: Initializing keyboard');
   });
 
-  it('activates keyboard for `KEYBOARD`', () => {
-    document.body.appendChild(MMMKeyboard.getDom());
+  describe('KEYBOARD', () => {
+    it('activates keyboard', () => {
+      document.body.appendChild(MMMKeyboard.getDom());
 
-    MMMKeyboard.notificationReceived('KEYBOARD', {
-      key: 'test-key',
-      style: 'default',
-      data: {
+      MMMKeyboard.notificationReceived('KEYBOARD', {
+        key: 'test-key',
+        style: 'default',
+        data: {
+          test: 'data',
+          foo: 'bar',
+        },
+      });
+
+      expect(MMMKeyboard.log)
+        .toHaveBeenCalledWith('MMM-Keyboard recognized a notification: KEYBOARD{"key":"test-key","style":"default","data":{"test":"data","foo":"bar"}}');
+      expect(MMMKeyboard.log)
+        .toHaveBeenCalledWith('Activating Keyboard!');
+      expect(MMMKeyboard.current.key).toBe('test-key');
+      expect(MMMKeyboard.current.data).toEqual({
         test: 'data',
         foo: 'bar',
-      },
+      });
+      expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+        layoutName: 'shift',
+      });
+      expect(document.getElementById('kbInput').value)
+        .toBe('test-input');
+      expect(document.getElementById('inputDiv').style.display)
+        .toBe('block');
     });
 
-    expect(MMMKeyboard.log)
-      .toHaveBeenCalledWith('MMM-Keyboard recognized a notification: KEYBOARD{"key":"test-key","style":"default","data":{"test":"data","foo":"bar"}}');
-    expect(MMMKeyboard.log)
-      .toHaveBeenCalledWith('Activating Keyboard!');
-    expect(MMMKeyboard.current.key).toBe('test-key');
-    expect(MMMKeyboard.current.data).toEqual({
-      test: 'data',
-      foo: 'bar',
+    it('sets layout shift if default and startUppercase', () => {
+      document.body.appendChild(MMMKeyboard.getDom());
+      MMMKeyboard.config.startUppercase = true;
+
+      MMMKeyboard.notificationReceived('KEYBOARD', {
+        key: 'test-key',
+        style: 'default',
+      });
+
+      expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+        layoutName: 'shift',
+      });
     });
-    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
-      layoutName: 'shift',
+
+    it('sets layout default if default and not startUppercase', () => {
+      document.body.appendChild(MMMKeyboard.getDom());
+      MMMKeyboard.config.startUppercase = false;
+
+      MMMKeyboard.notificationReceived('KEYBOARD', {
+        key: 'test-key',
+        style: 'default',
+      });
+
+      expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+        layoutName: 'default',
+      });
     });
-    expect(document.getElementById('kbInput').value)
-      .toBe('test-input');
-    expect(document.getElementById('inputDiv').style.display)
-      .toBe('block');
+
+    it('sets layout numbers if numbers specified', () => {
+      document.body.appendChild(MMMKeyboard.getDom());
+
+      MMMKeyboard.notificationReceived('KEYBOARD', {
+        key: 'test-key',
+        style: 'numbers',
+      });
+
+      expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+        layoutName: 'numbers',
+      });
+    });
+
+    it('sets layout default if default, startUppercase, but value specified', () => {
+      document.body.appendChild(MMMKeyboard.getDom());
+      MMMKeyboard.config.startUppercase = true;
+
+      MMMKeyboard.notificationReceived('KEYBOARD', {
+        key: 'test-key',
+        style: 'default',
+        value: 'old value',
+      });
+
+      expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+        layoutName: 'default',
+      });
+    });
   });
 });
 
@@ -462,7 +524,6 @@ describe('handleShift', () => {
     expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
       layoutName: 'numbers',
     });
-    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
   });
 
   it('sets layout to default if shiftState is default', () => {
@@ -473,7 +534,6 @@ describe('handleShift', () => {
     expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
       layoutName: 'default',
     });
-    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
   });
 
   it('sets layout to default if shiftState is shift', () => {
@@ -484,7 +544,6 @@ describe('handleShift', () => {
     expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
       layoutName: 'shift',
     });
-    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
   });
 
   it('sets layout to default if shiftState is caps', () => {
@@ -495,7 +554,6 @@ describe('handleShift', () => {
     expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
       layoutName: 'shift',
     });
-    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
   });
 });
 
@@ -512,7 +570,6 @@ describe('handleNumbers', () => {
     expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
       layoutName: 'default',
     });
-    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
   });
 
   it('sets layout to numbers if not already keyboard numbers', () => {
@@ -523,7 +580,6 @@ describe('handleNumbers', () => {
     expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
       layoutName: 'numbers',
     });
-    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
   });
 });
 
@@ -636,6 +692,16 @@ describe('showKeyboard', () => {
 
     expect(document.getElementById('sendButton').innerText)
       .toBe(MMMKeyboard.config.sendLabel);
+  });
+
+  it('sets the value from current if specified from payload', () => {
+    MMMKeyboard.current = {
+      value: 'existing value',
+    };
+
+    MMMKeyboard.showKeyboard();
+
+    expect(document.getElementById('kbInput').value).toBe('existing value');
   });
 });
 

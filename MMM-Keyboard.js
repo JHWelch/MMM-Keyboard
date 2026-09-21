@@ -140,7 +140,9 @@ Module.register('MMM-Keyboard', {
       this.log('Activating Keyboard!');
       this.current = payload;
       const layoutName = payload.style == 'default'
-        ? (this.config.startUppercase ? 'shift' : 'default')
+        ? (this.config.startUppercase && !this.current.value
+          ? 'shift'
+          : 'default')
         : 'numbers';
       this.keyboard.setOptions({layoutName});
       this.showKeyboard();
@@ -219,7 +221,6 @@ Module.register('MMM-Keyboard', {
       layoutName: layout,
     });
     if (button === '{shift}') { this.log('Changing shift mode to ' + layout); }
-    this.showKeyboard();
   },
 
   handleNumbers: function () {
@@ -228,7 +229,6 @@ Module.register('MMM-Keyboard', {
     this.keyboard.setOptions({
       layoutName: numbersToggle,
     });
-    this.showKeyboard();
   },
 
   buildKeyboard: function () {
@@ -299,6 +299,11 @@ Module.register('MMM-Keyboard', {
       ?? this.config.sendLabel;
     this.kbContainer.classList.add('show-keyboard');
     document.getElementById('inputDiv').style.display = 'block';
+    const { value } = this.current;
+    if (value) {
+      this.keyboard.setInput(value);
+    }
+
     document.getElementById('kbInput').value = this.keyboard.getInput();
   },
 
