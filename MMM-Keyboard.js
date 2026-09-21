@@ -91,6 +91,11 @@ Module.register('MMM-Keyboard', {
     input.addEventListener('input', event => {
       this.keyboard.setInput(event.target.value);
     });
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        this.sendInput();
+      }
+    });
     const send = document.createElement('button');
     send.id = 'sendButton';
     send.className = 'sendButton';
@@ -116,6 +121,12 @@ Module.register('MMM-Keyboard', {
     kb.className = 'simple-keyboard';
     this.kbContainer.appendChild(kb);
     container.appendChild(this.kbContainer);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        this.hideKeyboard();
+      }
+    });
 
     return container;
   },
