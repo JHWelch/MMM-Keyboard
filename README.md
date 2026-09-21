@@ -103,7 +103,7 @@ this.sendNotification('KEYBOARD', {
     key: 'MMM-YourModule',
     style: 'numbers',
     sendLabel: 'ADD',
-    value: '5+5'
+    value: '5+5',
     data: {
         sum: 10,
         foo: 'bar',
