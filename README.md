@@ -79,30 +79,44 @@ npm install --omit=dev
 
 ## Opening the keyboard
 
-The keyboard works with MagicMirror's notification system. You can broadcast notifications from another module using the following parameters
+The keyboard works with MagicMirror's notification system. To launch the keyboard with the simplest arguments:
 
 ```js
-this.sendNotification("KEYBOARD", {
-    key: "uniqueKey",
-    style: "default",
-    data: {},
+this.sendNotification('KEYBOARD', {
+    key: 'uniqueKey',
+    style: 'default',
 });
 ```
 
-The payload of the notification must be an object containing two parameters:  
-`key`: You can use any unique key, it is advised to use the module name. MMM-Keyboard will take the key and send it back for the module to understand it.  
-`style`: Use "default" or "numbers" here.  
-`data`: Any data you want to transfer. E.g. if the keyboard input should be allocated to a certain element.  
+## Possible parameters
+
+| Parameter   | Required | Description                                                                                                                          |
+| ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `key`       | Yes      | Any unique identifier, ex. the module name. MMM-Keyboard will take the key and send it back for the module to understand it          |
+| `style`     | Yes      | Required to keep consistency with classic. Options are `'default'` or `'numbers'`. Whether to start keyboard with letters or numbers |
+| `data`      | No       | Optional extra data that will be returned along with the `key`                                                                       |
+| `sendLabel` | No       | Override the label for the Send button                                                                                               |
+
+```js
+this.sendNotification('KEYBOARD', {
+    key: 'MMM-YourModule',
+    style: 'numbers',
+    sendLabel: 'ADD',
+    data: {
+        sum: 10,
+        foo: 'bar',
+    },
+});
+```
 
 ## Receiving data
 
 As soon as you hit the "SEND!"-Button the keyboard sends back the written content using the format
 
 ```js
-this.sendNotification("KEYBOARD_INPUT", {
-    key: "uniqueKey",
-    message: "test",
-    data: {}
+this.sendNotification('KEYBOARD_INPUT', {
+    key: 'uniqueKey',
+    message: 'test',
 });
 ```
 
@@ -111,8 +125,19 @@ You can fetch the message by checking for the `key` component. Here an example:
 
 ```js
 notificationReceived : function (notification, payload) {
-    if (notification == "KEYBOARD_INPUT" && payload.key === "uniqueKey") {
+    if (notification == 'KEYBOARD_INPUT' && payload.key === 'uniqueKey') {
         console.log(payload.message);
+    }
+},
+```
+
+If additional data is passed with `data`, it will be returned as part of the payload
+
+```js
+notificationReceived : function (notification, payload) {
+    if (notification == 'KEYBOARD_INPUT' && payload.key === 'uniqueKey') {
+        const { sum, foo } = payload.data;
+        // ...
     }
 },
 ```
