@@ -22,11 +22,17 @@
   "dependencies": {
     "simple-keyboard": "^3.8.190"
   },
-  "contributors": ["Dirk Kovert (lavolp3)"],
+  "contributors": [
+    "Dirk Kovert (lavolp3)"
+  ],
   "devDependencies": {
     "@jhwelch/mmm-eslint-config": "^5.0.0",
     "eslint": "^10.11.0",
     "jest": "^30.5.2",
     "jest-environment-jsdom": "^30.5.2"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "unrs-resolver@1.12.2": true
   }
 }
