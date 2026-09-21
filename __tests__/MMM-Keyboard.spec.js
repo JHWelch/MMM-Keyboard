@@ -210,34 +210,77 @@ describe('notificationReceived', () => {
       .toHaveBeenCalledWith('MMM-Keyboard: Initializing keyboard');
   });
 
-  it('activates keyboard for `KEYBOARD`', () => {
-    document.body.appendChild(MMMKeyboard.getDom());
+  describe('KEYBOARD', () => {
+    it('activates keyboard', () => {
+      document.body.appendChild(MMMKeyboard.getDom());
 
-    MMMKeyboard.notificationReceived('KEYBOARD', {
-      key: 'test-key',
-      style: 'default',
-      data: {
+      MMMKeyboard.notificationReceived('KEYBOARD', {
+        key: 'test-key',
+        style: 'default',
+        data: {
+          test: 'data',
+          foo: 'bar',
+        },
+      });
+
+      expect(MMMKeyboard.log)
+        .toHaveBeenCalledWith('MMM-Keyboard recognized a notification: KEYBOARD{"key":"test-key","style":"default","data":{"test":"data","foo":"bar"}}');
+      expect(MMMKeyboard.log)
+        .toHaveBeenCalledWith('Activating Keyboard!');
+      expect(MMMKeyboard.current.key).toBe('test-key');
+      expect(MMMKeyboard.current.data).toEqual({
         test: 'data',
         foo: 'bar',
-      },
+      });
+      expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+        layoutName: 'shift',
+      });
+      expect(document.getElementById('kbInput').value)
+        .toBe('test-input');
+      expect(document.getElementById('inputDiv').style.display)
+        .toBe('block');
     });
 
-    expect(MMMKeyboard.log)
-      .toHaveBeenCalledWith('MMM-Keyboard recognized a notification: KEYBOARD{"key":"test-key","style":"default","data":{"test":"data","foo":"bar"}}');
-    expect(MMMKeyboard.log)
-      .toHaveBeenCalledWith('Activating Keyboard!');
-    expect(MMMKeyboard.current.key).toBe('test-key');
-    expect(MMMKeyboard.current.data).toEqual({
-      test: 'data',
-      foo: 'bar',
+    it('sets layout shift if default and startUppercase', () => {
+      document.body.appendChild(MMMKeyboard.getDom());
+
+      MMMKeyboard.notificationReceived('KEYBOARD', {
+        key: 'test-key',
+        style: 'default',
+      });
+
+      expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+        layoutName: 'shift',
+      });
     });
-    expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
-      layoutName: 'shift',
+
+    it('sets layout default if default and not startUppercase', () => {
+      document.body.appendChild(MMMKeyboard.getDom());
+      MMMKeyboard.config.startUppercase = false;
+
+      MMMKeyboard.notificationReceived('KEYBOARD', {
+        key: 'test-key',
+        style: 'default',
+      });
+
+      expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+        layoutName: 'default',
+      });
     });
-    expect(document.getElementById('kbInput').value)
-      .toBe('test-input');
-    expect(document.getElementById('inputDiv').style.display)
-      .toBe('block');
+
+    it('sets layout numbers if numbers specified', () => {
+      document.body.appendChild(MMMKeyboard.getDom());
+      MMMKeyboard.config.startUppercase = false;
+
+      MMMKeyboard.notificationReceived('KEYBOARD', {
+        key: 'test-key',
+        style: 'numbers',
+      });
+
+      expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+        layoutName: 'numbers',
+      });
+    });
   });
 });
 
