@@ -67,7 +67,7 @@ npm install --omit=dev
 | Option             | type                   | default         | Description                                                                                            |
 | ------------------ | ---------------------- | --------------- | ------------------------------------------------------------------------------------------------------ |
 | `language`         | string                 | config.language | The language. You can override the MM settings here.                                                   |
-| `alwaysShow`       | boolean                | false           | Always show keyboard.  **(not implemented yet)**                                                       |
+| `alwaysShow`       | boolean                | false           | Always show keyboard.                                                                                  |
 | `startWithNumbers` | boolean                | false           | Start keyboard with 'numbers' layout                                                                   |
 | `startUppercase`   | boolean                | true            | Always start with uppercase letters                                                                    |
 | `debug`            | boolean                | false           | Debug mode for additional console output. Will also create a keyboard button to activate the keyboard. |

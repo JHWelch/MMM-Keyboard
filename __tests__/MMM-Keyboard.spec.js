@@ -39,7 +39,7 @@ afterEach(() => {
 describe('defaults', () => {
   it('has a default config', () => {
     expect(MMMKeyboard.defaults).toEqual({
-      showAlways: false,
+      alwaysShow: false,
       layout: 'default',
       sendLabel: 'SEND!',
       language: 'en',
@@ -187,6 +187,14 @@ describe('getDom', () => {
       expect(MMMKeyboard.getDom().querySelector('.sendButton').innerText.trim())
         .toBe('Submit');
     });
+  });
+
+  it('will launch showing with alwaysShow', () => {
+    MMMKeyboard.config.alwaysShow = true;
+
+    expect(MMMKeyboard.getDom().querySelector('#inputDiv').style.display)
+      .toBe('block');
+    expect(MMMKeyboard.kbContainer.classList).toContain('show-keyboard');
   });
 });
 
@@ -669,5 +677,15 @@ describe('hideKeyboard', () => {
 
     expect(document.getElementsByClassName('kbButton')[0].style.display)
       .toBe('none');
+  });
+
+  it('does nothing if alwaysShow', () => {
+    MMMKeyboard.config.alwaysShow = true;
+    MMMKeyboard.kbContainer = document.createElement('div');
+    MMMKeyboard.kbContainer.classList.add('show-keyboard');
+
+    MMMKeyboard.hideKeyboard();
+
+    expect(MMMKeyboard.kbContainer.classList).toContain('show-keyboard');
   });
 });
