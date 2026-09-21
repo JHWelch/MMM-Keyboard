@@ -117,6 +117,10 @@ As soon as you hit the "SEND!"-Button the keyboard sends back the written conten
 this.sendNotification('KEYBOARD_INPUT', {
     key: 'uniqueKey',
     message: 'test',
+    data: {
+        sum: 10,
+        foo: 'bar',
+    }
 });
 ```
 
