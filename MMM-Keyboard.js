@@ -297,6 +297,11 @@ Module.register('MMM-Keyboard', {
       ?? this.config.sendLabel;
     this.kbContainer.classList.add('show-keyboard');
     document.getElementById('inputDiv').style.display = 'block';
+    const { value } = this.current;
+    if (value) {
+      this.keyboard.setInput(value);
+    }
+
     document.getElementById('kbInput').value = this.keyboard.getInput();
   },
 

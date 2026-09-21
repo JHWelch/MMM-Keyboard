@@ -22,8 +22,12 @@ beforeEach(() => {
   oldLog = MMMKeyboard.log;
   MMMKeyboard.log = jest.fn();
   MMMKeyboard.keyboard = {
+    value: 'test-input',
     setOptions: jest.fn(),
-    getInput: jest.fn().mockReturnValue('test-input'),
+    getInput: jest.fn().mockImplementation(() => MMMKeyboard.keyboard.value),
+    setInput: jest.fn().mockImplementation(
+      (value) => MMMKeyboard.keyboard.value = value,
+    ),
     clearInput: jest.fn(),
     options: {
       layoutName: 'default',
@@ -630,6 +634,16 @@ describe('showKeyboard', () => {
 
     expect(document.getElementById('sendButton').innerText)
       .toBe(MMMKeyboard.config.sendLabel);
+  });
+
+  it('sets the value from current if specified from payload', () => {
+    MMMKeyboard.current = {
+      value: 'existing value',
+    };
+
+    MMMKeyboard.showKeyboard();
+
+    expect(document.getElementById('kbInput').value).toBe('existing value');
   });
 });
 
