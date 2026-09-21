@@ -7,7 +7,7 @@ const shiftStateCapsLock = 2;
 /*jshint esversion: 6 */
 Module.register('MMM-Keyboard', {
   defaults: {
-    showAlways: false,
+    alwaysShow: false,
     layout: 'default',
     language: config.language || 'en', // eslint-disable-line no-undef
     startUppercase: true,
@@ -61,9 +61,11 @@ Module.register('MMM-Keyboard', {
   },
 
   getDom: function () {
+    const {debug, alwaysShow} = this.config;
+
     const container = document.createElement('div');
     container.className = 'keyboardWrapper';
-    if (this.config.debug) {
+    if (debug) {
       const kbButton = document.createElement('div');
       kbButton.width = '100px';
       kbButton.className = 'kbButton fas fa-keyboard';
@@ -75,9 +77,13 @@ Module.register('MMM-Keyboard', {
     }
     this.kbContainer = document.createElement('div');
     this.kbContainer.className = 'kbContainer';
+    if (alwaysShow) {
+      this.kbContainer.classList.add('show-keyboard');
+    }
+
     const inputDiv = document.createElement('div');
     inputDiv.id = 'inputDiv';
-    inputDiv.style.display = 'none';
+    inputDiv.style.display = alwaysShow ? 'block' : 'none';
     const input = document.createElement('input');
     input.id = 'kbInput';
     input.setAttribute('type', 'text');
@@ -285,6 +291,10 @@ Module.register('MMM-Keyboard', {
   },
 
   hideKeyboard: function () {
+    if (this.config.alwaysShow) {
+      return;
+    }
+
     this.kbContainer.classList.remove('show-keyboard');
     if (this.config.debug) {
       document.getElementsByClassName('kbButton')[0].style.display = 'block';
