@@ -103,6 +103,7 @@
 .MMM-Keyboard .hg-theme-default .hg-button {
   color: var(--color-text-bright);
   background-color: var(--color-background);
+  height: 50px;
 }
 
 .MMM-Keyboard .hg-theme-default .specialButton {
@@ -186,7 +187,7 @@
     box-sizing: border-box;
     cursor: pointer;
     display: flex;
-    height: 40px;
+    height: 50px;
     justify-content: center;
     padding: 5px;
     -webkit-tap-highlight-color: rgba(0,0,0,0)
