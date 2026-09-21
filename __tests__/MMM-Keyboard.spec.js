@@ -462,7 +462,6 @@ describe('handleShift', () => {
     expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
       layoutName: 'numbers',
     });
-    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
   });
 
   it('sets layout to default if shiftState is default', () => {
@@ -473,7 +472,6 @@ describe('handleShift', () => {
     expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
       layoutName: 'default',
     });
-    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
   });
 
   it('sets layout to default if shiftState is shift', () => {
@@ -484,7 +482,6 @@ describe('handleShift', () => {
     expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
       layoutName: 'shift',
     });
-    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
   });
 
   it('sets layout to default if shiftState is caps', () => {
@@ -495,7 +492,6 @@ describe('handleShift', () => {
     expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
       layoutName: 'shift',
     });
-    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
   });
 });
 
@@ -512,7 +508,6 @@ describe('handleNumbers', () => {
     expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
       layoutName: 'default',
     });
-    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
   });
 
   it('sets layout to numbers if not already keyboard numbers', () => {
@@ -523,7 +518,6 @@ describe('handleNumbers', () => {
     expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
       layoutName: 'numbers',
     });
-    expect(MMMKeyboard.showKeyboard).toHaveBeenCalled();
   });
 });
 

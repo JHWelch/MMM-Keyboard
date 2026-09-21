@@ -219,7 +219,6 @@ Module.register('MMM-Keyboard', {
       layoutName: layout,
     });
     if (button === '{shift}') { this.log('Changing shift mode to ' + layout); }
-    this.showKeyboard();
   },
 
   handleNumbers: function () {
@@ -228,7 +227,6 @@ Module.register('MMM-Keyboard', {
     this.keyboard.setOptions({
       layoutName: numbersToggle,
     });
-    this.showKeyboard();
   },
 
   buildKeyboard: function () {
