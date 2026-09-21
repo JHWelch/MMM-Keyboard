@@ -94,6 +94,7 @@ this.sendNotification('KEYBOARD', {
 | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | `key`       | Yes      | Any unique identifier, ex. the module name. MMM-Keyboard will take the key and send it back for the module to understand it          |
 | `style`     | Yes      | Required to keep consistency with classic. Options are `'default'` or `'numbers'`. Whether to start keyboard with letters or numbers |
+| `value`     | No       | Starting value for the input. Useful when editing data.                                                                              |
 | `data`      | No       | Optional extra data that will be returned along with the `key`                                                                       |
 | `sendLabel` | No       | Override the label for the Send button                                                                                               |
 
@@ -102,6 +103,7 @@ this.sendNotification('KEYBOARD', {
     key: 'MMM-YourModule',
     style: 'numbers',
     sendLabel: 'ADD',
+    value: '5+5'
     data: {
         sum: 10,
         foo: 'bar',
