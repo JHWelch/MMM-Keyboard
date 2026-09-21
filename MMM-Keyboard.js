@@ -140,7 +140,9 @@ Module.register('MMM-Keyboard', {
       this.log('Activating Keyboard!');
       this.current = payload;
       const layoutName = payload.style == 'default'
-        ? (this.config.startUppercase ? 'shift' : 'default')
+        ? (this.config.startUppercase && !this.current.value
+          ? 'shift'
+          : 'default')
         : 'numbers';
       this.keyboard.setOptions({layoutName});
       this.showKeyboard();

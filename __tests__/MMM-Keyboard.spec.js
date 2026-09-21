@@ -243,6 +243,7 @@ describe('notificationReceived', () => {
 
     it('sets layout shift if default and startUppercase', () => {
       document.body.appendChild(MMMKeyboard.getDom());
+      MMMKeyboard.config.startUppercase = true;
 
       MMMKeyboard.notificationReceived('KEYBOARD', {
         key: 'test-key',
@@ -270,7 +271,6 @@ describe('notificationReceived', () => {
 
     it('sets layout numbers if numbers specified', () => {
       document.body.appendChild(MMMKeyboard.getDom());
-      MMMKeyboard.config.startUppercase = false;
 
       MMMKeyboard.notificationReceived('KEYBOARD', {
         key: 'test-key',
@@ -279,6 +279,21 @@ describe('notificationReceived', () => {
 
       expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
         layoutName: 'numbers',
+      });
+    });
+
+    it('sets layout default if default, startUppercase, but value specified', () => {
+      document.body.appendChild(MMMKeyboard.getDom());
+      MMMKeyboard.config.startUppercase = true;
+
+      MMMKeyboard.notificationReceived('KEYBOARD', {
+        key: 'test-key',
+        style: 'default',
+        value: 'old value',
+      });
+
+      expect(MMMKeyboard.keyboard.setOptions).toHaveBeenCalledWith({
+        layoutName: 'default',
       });
     });
   });
