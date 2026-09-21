@@ -1,4 +1,5 @@
 /* global Module */
+/* global config */
 
 const shiftStateNormal = 0;
 const shiftStateShift = 1;
@@ -9,7 +10,7 @@ Module.register('MMM-Keyboard', {
   defaults: {
     alwaysShow: false,
     layout: 'default',
-    language: config.language || 'en', // eslint-disable-line no-undef
+    language: config.language || 'en',
     startUppercase: true,
     startWithNumbers: false,
     sendLabel: 'SEND!',
