@@ -148,6 +148,17 @@ notificationReceived : function (notification, payload) {
 },
 ```
 
+## Detecting if MMM-Keyboard is installed
+
+If you would like to change how your module operates if your user does or does not have the `MMM-Keyboard` module installed, 
+you can use this code snippet to determine if the module is installed and loaded at runtime.
+
+```js
+const hasKeyboard = config.modules
+  .map(({module}) => module)
+  .includes('MMM-Keyboard');
+```
+
 ## THANKS
 
 Thanks go to
