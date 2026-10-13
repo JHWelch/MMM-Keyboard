@@ -775,4 +775,23 @@ describe('hideKeyboard', () => {
 
     expect(MMMKeyboard.kbContainer.classList).toContain('show-keyboard');
   });
+
+  it('sends a "KEYBOARD_CLOSED" notification', () => {
+    MMMKeyboard.current = {
+      key: 'test-key',
+      data: { foo: 'bar' },
+      sendLabel: 'senddddd',
+      value: 'old value',
+    };
+    MMMKeyboard.kbContainer = document.createElement('div');
+    MMMKeyboard.kbContainer.classList.add('show-keyboard');
+    MMMKeyboard.sendNotification = jest.fn();
+
+    MMMKeyboard.hideKeyboard();
+
+    expect(MMMKeyboard.sendNotification).toHaveBeenCalledWith('KEYBOARD_CLOSED', {
+      key: 'test-key',
+      data: { foo: 'bar' },
+    });
+  });
 });
