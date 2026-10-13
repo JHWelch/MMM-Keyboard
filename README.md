@@ -148,6 +148,10 @@ notificationReceived : function (notification, payload) {
 },
 ```
 
+## Keyboard Closed
+
+When the keyboard is closed without submitting, a `KEYBOARD_CLOSED` event is fired without any payload.
+
 ## Detecting if MMM-Keyboard is installed
 
 If you would like to change how your module operates if your user does or does not have the `MMM-Keyboard` module installed, 

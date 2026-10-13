@@ -315,6 +315,8 @@ Module.register('MMM-Keyboard', {
     }
 
     this.kbContainer.classList.remove('show-keyboard');
+    this.sendNotification('KEYBOARD_CLOSED');
+
     if (this.config.debug) {
       document.getElementsByClassName('kbButton')[0].style.display = 'block';
     }
