@@ -726,6 +726,44 @@ describe('showKeyboard', () => {
   });
 });
 
+describe('hideKeyboardWithoutSubmit', () => {
+  beforeEach(() => {
+    MMMKeyboard.hideKeyboard = jest.fn();
+  });
+
+  it('hides the keyboard', () => {
+    MMMKeyboard.hideKeyboardWithoutSubmit();
+
+    expect(MMMKeyboard.hideKeyboard).toHaveBeenCalled();
+  });
+
+  it('does nothing if alwaysShow', () => {
+    MMMKeyboard.config.alwaysShow = true;
+    MMMKeyboard.kbContainer = document.createElement('div');
+    MMMKeyboard.kbContainer.classList.add('show-keyboard');
+
+    MMMKeyboard.hideKeyboardWithoutSubmit();
+
+    expect(MMMKeyboard.kbContainer.classList).toContain('show-keyboard');
+  });
+
+  it('sends a "KEYBOARD_CLOSED" notification', () => {
+    MMMKeyboard.current = {
+      key: 'test-key',
+      data: { foo: 'bar' },
+      sendLabel: 'senddddd',
+      value: 'old value',
+    };
+
+    MMMKeyboard.hideKeyboardWithoutSubmit();
+
+    expect(MMMKeyboard.sendNotification).toHaveBeenCalledWith('KEYBOARD_CLOSED', {
+      key: 'test-key',
+      data: { foo: 'bar' },
+    });
+  });
+});
+
 describe('hideKeyboard', () => {
   it('sets appropriate attributes', () => {
     MMMKeyboard.kbContainer = document.createElement('div');
@@ -774,24 +812,5 @@ describe('hideKeyboard', () => {
     MMMKeyboard.hideKeyboard();
 
     expect(MMMKeyboard.kbContainer.classList).toContain('show-keyboard');
-  });
-
-  it('sends a "KEYBOARD_CLOSED" notification', () => {
-    MMMKeyboard.current = {
-      key: 'test-key',
-      data: { foo: 'bar' },
-      sendLabel: 'senddddd',
-      value: 'old value',
-    };
-    MMMKeyboard.kbContainer = document.createElement('div');
-    MMMKeyboard.kbContainer.classList.add('show-keyboard');
-    MMMKeyboard.sendNotification = jest.fn();
-
-    MMMKeyboard.hideKeyboard();
-
-    expect(MMMKeyboard.sendNotification).toHaveBeenCalledWith('KEYBOARD_CLOSED', {
-      key: 'test-key',
-      data: { foo: 'bar' },
-    });
   });
 });
