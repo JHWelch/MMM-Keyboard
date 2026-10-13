@@ -109,7 +109,7 @@ Module.register('MMM-Keyboard', {
     hideButton.innerText = '\u21e7';
     hideButton.setAttribute('name', 'hideButton');
     hideButton.onclick = () => {
-      this.hideKeyboard();
+      this.hideKeyboardWithoutSubmit();
       document.getElementById('kbInput').value = '';
     };
 
@@ -124,7 +124,7 @@ Module.register('MMM-Keyboard', {
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {
-        this.hideKeyboard();
+        this.hideKeyboardWithoutSubmit();
       }
     });
 
@@ -240,7 +240,7 @@ Module.register('MMM-Keyboard', {
         && !event.target.classList.contains("keyboardWrapper")
         && !event.target.classList.contains("hg-button")
       ) {
-        this.hideKeyboard();
+        this.hideKeyboardWithoutSubmit();
       }
     });*/
     this.log(this.layouts);
@@ -309,14 +309,19 @@ Module.register('MMM-Keyboard', {
     document.getElementById('kbInput').value = this.keyboard.getInput();
   },
 
-  hideKeyboard: function () {
-    if (this.config.alwaysShow) {
-      return;
-    }
+  hideKeyboardWithoutSubmit: function () {
+    if (this.config.alwaysShow) { return; }
 
-    this.kbContainer.classList.remove('show-keyboard');
+    this.hideKeyboard();
+
     const { key, data } = this.current;
     this.sendNotification('KEYBOARD_CLOSED', { key, data });
+  },
+
+  hideKeyboard: function () {
+    if (this.config.alwaysShow) { return; }
+
+    this.kbContainer.classList.remove('show-keyboard');
 
     if (this.config.debug) {
       document.getElementsByClassName('kbButton')[0].style.display = 'block';
