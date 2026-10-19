@@ -14,6 +14,7 @@ Module.register('MMM-Keyboard', {
     startUppercase: true,
     startWithNumbers: false,
     sendLabel: 'SEND!',
+    hideLabel: '\u21e7',
     theme: 'default',
     debug: false,
   },
@@ -84,7 +85,6 @@ Module.register('MMM-Keyboard', {
 
     const inputDiv = document.createElement('div');
     inputDiv.id = 'inputDiv';
-    inputDiv.style.display = alwaysShow ? 'block' : 'none';
     const input = document.createElement('input');
     input.id = 'kbInput';
     input.setAttribute('type', 'text');
@@ -105,8 +105,9 @@ Module.register('MMM-Keyboard', {
       this.sendInput();
     };
     const hideButton = document.createElement('button');
+    hideButton.id = 'hideButton';
     hideButton.className = 'hideButton';
-    hideButton.innerText = '\u21e7';
+    hideButton.innerText = this.config.hideLabel;
     hideButton.setAttribute('name', 'hideButton');
     hideButton.onclick = () => {
       this.hideKeyboardWithoutSubmit();
@@ -299,8 +300,9 @@ Module.register('MMM-Keyboard', {
   showKeyboard: function () {
     document.getElementById('sendButton').innerText = this.current.sendLabel
       ?? this.config.sendLabel;
+    document.getElementById('hideButton').innerText = this.current.hideLabel
+      ?? this.config.hideLabel;
     this.kbContainer.classList.add('show-keyboard');
-    document.getElementById('inputDiv').style.display = 'block';
     const { value } = this.current;
     if (value) {
       this.keyboard.setInput(value);

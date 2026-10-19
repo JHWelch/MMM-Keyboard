@@ -237,3 +237,9 @@
 .hg-theme-classic .hg-button.hg-standardBtn[data-skbtn="@"] {
     max-width: 60px
 }
+
+#inputDiv {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}

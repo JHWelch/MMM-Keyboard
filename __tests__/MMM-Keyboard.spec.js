@@ -46,6 +46,7 @@ describe('defaults', () => {
       alwaysShow: false,
       layout: 'default',
       sendLabel: 'SEND!',
+      hideLabel: '\u21e7',
       language: 'en',
       startUppercase: true,
       startWithNumbers: false,
@@ -193,11 +194,25 @@ describe('getDom', () => {
     });
   });
 
+  describe('hide button', () => {
+    it('defaults to up arrow', () => {
+      expect(MMMKeyboard.getDom().querySelector('.hideButton').innerText.trim())
+        .toBe('\u21e7');
+    });
+
+    it('can be overridden with config value', () => {
+      MMMKeyboard.config.hideLabel = 'Close';
+
+      expect(MMMKeyboard.getDom().querySelector('.hideButton').innerText.trim())
+        .toBe('Close');
+    });
+  });
+
   it('will launch showing with alwaysShow', () => {
     MMMKeyboard.config.alwaysShow = true;
 
-    expect(MMMKeyboard.getDom().querySelector('#inputDiv').style.display)
-      .toBe('block');
+    MMMKeyboard.getDom();
+
     expect(MMMKeyboard.kbContainer.classList).toContain('show-keyboard');
   });
 });
@@ -237,8 +252,6 @@ describe('notificationReceived', () => {
       });
       expect(document.getElementById('kbInput').value)
         .toBe('test-input');
-      expect(document.getElementById('inputDiv').style.display)
-        .toBe('block');
     });
 
     it('sets layout shift if default and startUppercase', () => {
@@ -669,6 +682,7 @@ describe('buildKeyboard', () => {
 
 describe('showKeyboard', () => {
   let send;
+  let hide;
 
   beforeEach(() => {
     MMMKeyboard.kbContainer = document.createElement('div');
@@ -683,14 +697,19 @@ describe('showKeyboard', () => {
     send.className = 'sendButton';
     send.innerText = MMMKeyboard.config.sendLabel;
     send.setAttribute('name', 'sendButton');
+    hide = document.createElement('button');
+    hide.id = 'hideButton';
+    hide.className = 'hideButton';
+    hide.innerText = MMMKeyboard.config.hideLabel;
+    hide.setAttribute('name', 'hideButton');
     document.body.appendChild(send);
+    document.body.appendChild(hide);
   });
 
   it('sets appropriate attributes', () => {
     MMMKeyboard.showKeyboard();
 
     expect(MMMKeyboard.kbContainer.classList).toContain('show-keyboard');
-    expect(document.getElementById('inputDiv').style.display).toBe('block');
     expect(document.getElementById('kbInput').value).toBe('test-input');
   });
 
@@ -703,6 +722,17 @@ describe('showKeyboard', () => {
 
     expect(document.getElementById('sendButton').innerText)
       .toBe('Overridden');
+  });
+
+  it('updates the hide button with payload override', () => {
+    MMMKeyboard.current = {
+      hideLabel: 'Close',
+    };
+
+    MMMKeyboard.showKeyboard();
+
+    expect(document.getElementById('hideButton').innerText)
+      .toBe('Close');
   });
 
   it('will reset custom send button with config', () => {

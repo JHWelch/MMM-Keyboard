@@ -72,6 +72,7 @@ npm install --omit=dev
 | `startUppercase`   | boolean                | true            | Always start with uppercase letters                                                                    |
 | `debug`            | boolean                | false           | Debug mode for additional console output. Will also create a keyboard button to activate the keyboard. |
 | `sendLabel`        | string                 | `'SEND!'`       | The label on the send button that will send the input back to the module.                              |
+| `hideLabel`        | string                 | `'\u21e7'`      | The label on the hide button that will hide the keyboard without submitting the input.                 |
 | `theme`            | `'default'\|'classic'` | `'default'`     | Keyboard theme to use. `'default'` is dark to match mirror, `'classic'` is the old repository theme.   |
 
 
@@ -97,6 +98,7 @@ this.sendNotification('KEYBOARD', {
 | `value`     | No       | Starting value for the input. Useful when editing data.                                                                              |
 | `data`      | No       | Optional extra data that will be returned along with the `key`                                                                       |
 | `sendLabel` | No       | Override the label for the Send button                                                                                               |
+| `hideLabel` | No       | Override the label for the Hide button                                                                                               |
 
 ```js
 this.sendNotification('KEYBOARD', {
