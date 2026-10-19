@@ -105,6 +105,7 @@ Module.register('MMM-Keyboard', {
       this.sendInput();
     };
     const hideButton = document.createElement('button');
+    hideButton.id = 'hideButton';
     hideButton.className = 'hideButton';
     hideButton.innerText = this.config.hideLabel;
     hideButton.setAttribute('name', 'hideButton');
@@ -299,6 +300,8 @@ Module.register('MMM-Keyboard', {
   showKeyboard: function () {
     document.getElementById('sendButton').innerText = this.current.sendLabel
       ?? this.config.sendLabel;
+    document.getElementById('hideButton').innerText = this.current.hideLabel
+      ?? this.config.hideLabel;
     this.kbContainer.classList.add('show-keyboard');
     const { value } = this.current;
     if (value) {

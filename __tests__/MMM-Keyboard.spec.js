@@ -682,6 +682,7 @@ describe('buildKeyboard', () => {
 
 describe('showKeyboard', () => {
   let send;
+  let hide;
 
   beforeEach(() => {
     MMMKeyboard.kbContainer = document.createElement('div');
@@ -696,7 +697,13 @@ describe('showKeyboard', () => {
     send.className = 'sendButton';
     send.innerText = MMMKeyboard.config.sendLabel;
     send.setAttribute('name', 'sendButton');
+    hide = document.createElement('button');
+    hide.id = 'hideButton';
+    hide.className = 'hideButton';
+    hide.innerText = MMMKeyboard.config.hideLabel;
+    hide.setAttribute('name', 'hideButton');
     document.body.appendChild(send);
+    document.body.appendChild(hide);
   });
 
   it('sets appropriate attributes', () => {
@@ -715,6 +722,17 @@ describe('showKeyboard', () => {
 
     expect(document.getElementById('sendButton').innerText)
       .toBe('Overridden');
+  });
+
+  it('updates the hide button with payload override', () => {
+    MMMKeyboard.current = {
+      hideLabel: 'Close',
+    };
+
+    MMMKeyboard.showKeyboard();
+
+    expect(document.getElementById('hideButton').innerText)
+      .toBe('Close');
   });
 
   it('will reset custom send button with config', () => {

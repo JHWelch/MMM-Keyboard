@@ -68,6 +68,7 @@ exports[`getDom can generate a dom for debug 1`] = `
       />
       <button
         class="hideButton"
+        id="hideButton"
         name="hideButton"
       />
     </div>
@@ -99,6 +100,7 @@ exports[`getDom returns the generated dom 1`] = `
       />
       <button
         class="hideButton"
+        id="hideButton"
         name="hideButton"
       />
     </div>
