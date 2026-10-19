@@ -56,7 +56,6 @@ exports[`getDom can generate a dom for debug 1`] = `
   >
     <div
       id="inputDiv"
-      style="display: none;"
     >
       <input
         id="kbInput"
@@ -88,7 +87,6 @@ exports[`getDom returns the generated dom 1`] = `
   >
     <div
       id="inputDiv"
-      style="display: none;"
     >
       <input
         id="kbInput"

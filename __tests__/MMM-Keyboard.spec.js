@@ -211,8 +211,8 @@ describe('getDom', () => {
   it('will launch showing with alwaysShow', () => {
     MMMKeyboard.config.alwaysShow = true;
 
-    expect(MMMKeyboard.getDom().querySelector('#inputDiv').style.display)
-      .toBe('block');
+    MMMKeyboard.getDom();
+
     expect(MMMKeyboard.kbContainer.classList).toContain('show-keyboard');
   });
 });
@@ -252,8 +252,6 @@ describe('notificationReceived', () => {
       });
       expect(document.getElementById('kbInput').value)
         .toBe('test-input');
-      expect(document.getElementById('inputDiv').style.display)
-        .toBe('block');
     });
 
     it('sets layout shift if default and startUppercase', () => {
@@ -705,7 +703,6 @@ describe('showKeyboard', () => {
     MMMKeyboard.showKeyboard();
 
     expect(MMMKeyboard.kbContainer.classList).toContain('show-keyboard');
-    expect(document.getElementById('inputDiv').style.display).toBe('block');
     expect(document.getElementById('kbInput').value).toBe('test-input');
   });
 

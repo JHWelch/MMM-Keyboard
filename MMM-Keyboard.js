@@ -85,7 +85,6 @@ Module.register('MMM-Keyboard', {
 
     const inputDiv = document.createElement('div');
     inputDiv.id = 'inputDiv';
-    inputDiv.style.display = alwaysShow ? 'block' : 'none';
     const input = document.createElement('input');
     input.id = 'kbInput';
     input.setAttribute('type', 'text');
@@ -301,7 +300,6 @@ Module.register('MMM-Keyboard', {
     document.getElementById('sendButton').innerText = this.current.sendLabel
       ?? this.config.sendLabel;
     this.kbContainer.classList.add('show-keyboard');
-    document.getElementById('inputDiv').style.display = 'block';
     const { value } = this.current;
     if (value) {
       this.keyboard.setInput(value);
