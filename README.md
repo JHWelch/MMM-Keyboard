@@ -98,6 +98,7 @@ this.sendNotification('KEYBOARD', {
 | `value`     | No       | Starting value for the input. Useful when editing data.                                                                              |
 | `data`      | No       | Optional extra data that will be returned along with the `key`                                                                       |
 | `sendLabel` | No       | Override the label for the Send button                                                                                               |
+| `hideLabel` | No       | Override the label for the Hide button                                                                                               |
 
 ```js
 this.sendNotification('KEYBOARD', {
