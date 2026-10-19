@@ -14,6 +14,7 @@ Module.register('MMM-Keyboard', {
     startUppercase: true,
     startWithNumbers: false,
     sendLabel: 'SEND!',
+    hideLabel: '\u21e7',
     theme: 'default',
     debug: false,
   },
@@ -106,7 +107,7 @@ Module.register('MMM-Keyboard', {
     };
     const hideButton = document.createElement('button');
     hideButton.className = 'hideButton';
-    hideButton.innerText = '\u21e7';
+    hideButton.innerText = this.config.hideLabel;
     hideButton.setAttribute('name', 'hideButton');
     hideButton.onclick = () => {
       this.hideKeyboardWithoutSubmit();

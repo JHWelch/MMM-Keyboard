@@ -46,6 +46,7 @@ describe('defaults', () => {
       alwaysShow: false,
       layout: 'default',
       sendLabel: 'SEND!',
+      hideLabel: '\u21e7',
       language: 'en',
       startUppercase: true,
       startWithNumbers: false,
@@ -190,6 +191,20 @@ describe('getDom', () => {
 
       expect(MMMKeyboard.getDom().querySelector('.sendButton').innerText.trim())
         .toBe('Submit');
+    });
+  });
+
+  describe('hide button', () => {
+    it('defaults to up arrow', () => {
+      expect(MMMKeyboard.getDom().querySelector('.hideButton').innerText.trim())
+        .toBe('\u21e7');
+    });
+
+    it('can be overridden with config value', () => {
+      MMMKeyboard.config.hideLabel = 'Close';
+
+      expect(MMMKeyboard.getDom().querySelector('.hideButton').innerText.trim())
+        .toBe('Close');
     });
   });
 
